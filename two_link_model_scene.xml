@@ -1,0 +1,31 @@
+<mujoco model="two_link_model_scene">
+  <compiler angle="degree" coordinate="local"/>
+  <option timestep="0.001" gravity="0 0 -9.81"/>
+
+  <visual>
+    <headlight ambient="0.45 0.45 0.45" diffuse="0.7 0.7 0.7" specular="0.1 0.1 0.1"/>
+  </visual>
+
+  <asset>
+    <!-- OBJ from 3D_model folder -->
+    <mesh name="two_link_mesh" file="Two_link_model.obj" scale="0.01 0.01 0.01"/>
+  </asset>
+
+  <worldbody>
+    <light name="key_light" pos="0 0 4" dir="0 0 -1" directional="true"/>
+    <camera name="overview" pos="2.0 -2.0 2.0" xyaxes="0.707 0.707 0 -0.35 0.35 0.87"/>
+    <geom name="ground" type="plane" pos="0 0 0" size="5 5 0.1" rgba="0.15 0.2 0.25 1"/>
+
+    <!-- Shift mesh up so imported model is visible near origin -->
+    <body name="two_link_model" pos="0 0 1.0">
+      <geom
+        name="two_link_visual"
+        type="mesh"
+        mesh="two_link_mesh"
+        rgba="0.75 0.75 0.8 1"
+        contype="0"
+        conaffinity="0"/>
+    </body>
+  </worldbody>
+</mujoco>
+

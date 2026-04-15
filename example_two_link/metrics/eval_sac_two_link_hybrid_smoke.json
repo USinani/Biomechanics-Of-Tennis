@@ -1,0 +1,112 @@
+{
+  "checkpoint": "example_two_link/checkpoints/sac_two_link_hybrid_smoke.zip",
+  "action_mode": "residual",
+  "target_mode": "planar_fixed",
+  "controller_param_source": "from_xml",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "episodes_per_seed": 2,
+  "n_episodes": 10,
+  "mean_return": -15.67148535016114,
+  "std_return": 1.4333366310560844,
+  "mean_final_dist": 0.07379496619105338,
+  "std_final_dist": 2.3265440481549186e-05,
+  "success_rate": 0.0,
+  "episodes": [
+    {
+      "episode_return": -14.826740598498,
+      "steps": 100,
+      "final_dist": 0.07380802929401398,
+      "max_torque": 3.8360271523051357,
+      "max_speed": 0.00017806569559600222,
+      "success_steps": 0,
+      "seed": 0
+    },
+    {
+      "episode_return": -16.05653736490711,
+      "steps": 100,
+      "final_dist": 0.07381660491228104,
+      "max_torque": 3.8356689358380036,
+      "max_speed": 7.914170096377356e-06,
+      "success_steps": 0,
+      "seed": 1
+    },
+    {
+      "episode_return": -14.398382911815842,
+      "steps": 100,
+      "final_dist": 0.07380706071853638,
+      "max_torque": 3.836062161214347,
+      "max_speed": 0.00019771114776585968,
+      "success_steps": 0,
+      "seed": 1000
+    },
+    {
+      "episode_return": -15.89913110866213,
+      "steps": 100,
+      "final_dist": 0.07377922534942627,
+      "max_torque": 3.8369275590407197,
+      "max_speed": 0.0007308329836338519,
+      "success_steps": 0,
+      "seed": 1001
+    },
+    {
+      "episode_return": -14.77991764441381,
+      "steps": 100,
+      "final_dist": 0.07381405681371689,
+      "max_torque": 3.835793405583612,
+      "max_speed": 5.192170848869185e-05,
+      "success_steps": 0,
+      "seed": 2000
+    },
+    {
+      "episode_return": -15.393128777935145,
+      "steps": 100,
+      "final_dist": 0.07378189265727997,
+      "max_torque": 3.8369639795935795,
+      "max_speed": 0.0007083970547876998,
+      "success_steps": 0,
+      "seed": 2001
+    },
+    {
+      "episode_return": -14.776424780999012,
+      "steps": 100,
+      "final_dist": 0.07377992570400238,
+      "max_torque": 3.837030849194882,
+      "max_speed": 0.0007474551583564682,
+      "success_steps": 0,
+      "seed": 3000
+    },
+    {
+      "episode_return": -19.69496156980409,
+      "steps": 100,
+      "final_dist": 0.07380549609661102,
+      "max_torque": 3.8350615866834215,
+      "max_speed": 2.4138445958339794e-05,
+      "success_steps": 0,
+      "seed": 3001
+    },
+    {
+      "episode_return": -15.294084999384985,
+      "steps": 100,
+      "final_dist": 0.07381726801395416,
+      "max_torque": 3.8356677493621327,
+      "max_speed": 1.5936063425778394e-05,
+      "success_steps": 0,
+      "seed": 4000
+    },
+    {
+      "episode_return": -15.595543745191275,
+      "steps": 100,
+      "final_dist": 0.07374010235071182,
+      "max_torque": 3.8383659691599927,
+      "max_speed": 0.0015263092262716989,
+      "success_steps": 0,
+      "seed": 4001
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+================================================================================
+             TENNIS SWING BIOMECHANICS SIMULATION REPORT
+================================================================================
+Generated: 2025-11-27 08:38:29
+
+
+1. SIMULATION PARAMETERS
+------------------------
+   Simulation duration: 0.500 s
+   Time step: 0.0010 s
+   Number of samples: 501
+
+2. MODEL PARAMETERS
+-------------------
+
+   Two-Link Model:
+   ---------------
+   Upper arm length:     0.300 m
+   Forearm+racket length: 0.350 m
+   Upper arm mass:       2.000 kg
+   Forearm+racket mass:  1.500 kg
+   Upper arm inertia:    0.0250 kg*m^2
+   Forearm+racket inertia: 0.0450 kg*m^2
+
+   Three-Link Model:
+   -----------------
+   Upper arm length: 0.300 m
+   Forearm length:   0.250 m
+   Racket length:    0.680 m
+   Upper arm mass:   2.000 kg
+   Forearm mass:     1.200 kg
+   Racket mass:      0.340 kg
+
+3. KINEMATIC ANALYSIS
+---------------------
+
+   Two-Link Model:
+   Joint Angle Ranges (degrees):
+     Shoulder: -30.0 to 90.0 (range: 120.0)
+     Elbow:    10.0 to 90.0 (range: 80.0)
+   Peak Joint Velocities (deg/s):
+     Shoulder: 450.0
+     Elbow:    300.0
+   Racket Head Speed:
+     Maximum: 3.05 m/s (11.0 km/h)
+     Time at max speed: 0.263 s
+
+   Three-Link Model:
+   Joint Angle Ranges (degrees):
+     Shoulder: -30.0 to 90.0 (range: 120.0)
+     Elbow:    10.0 to 90.0 (range: 80.0)
+     Wrist:    -20.0 to 30.0 (range: 50.0)
+   Peak Joint Velocities (deg/s):
+     Shoulder: 450.0
+     Elbow:    300.0
+     Wrist:    187.5
+
+4. DYNAMIC ANALYSIS (JOINT TORQUES)
+-----------------------------------
+
+   Two-Link Model:
+   Peak Joint Torques (Nm):
+     Shoulder: 22.15 (max), -16.56 (min)
+     Elbow:    6.96 (max), -6.09 (min)
+   RMS Joint Torques (Nm):
+     Shoulder: 15.20
+     Elbow:    4.64
+
+   Three-Link Model:
+   Peak Joint Torques (Nm):
+     Shoulder: 26.15 (max), -20.60 (min)
+     Elbow:    9.79 (max), -9.21 (min)
+     Wrist:    4.37 (max), -4.06 (min)
+   RMS Joint Torques (Nm):
+     Shoulder: 18.04
+     Elbow:    7.03
+     Wrist:    3.16
+
+5. BALL TRAJECTORY ANALYSIS
+---------------------------
+   Initial ball velocity: 20.10 m/s
+   Initial ball spin: 50.0 rad/s
+   Flight duration: 0.820 s
+   Final position: [-2.10, 0.00, 0.00] m
+   Horizontal distance: 14.10 m
+   Maximum height: 1.70 m
+
+6. ENERGY ANALYSIS
+------------------
+   Two-Link Model:
+   Total mechanical work: 11.39 J
+   Positive work (acceleration): 16.85 J
+   Negative work (deceleration): -5.46 J
+   Peak power output: 108.21 W
+
+================================================================================
+                           END OF REPORT
+================================================================================

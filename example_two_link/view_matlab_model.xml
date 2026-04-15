@@ -1,0 +1,41 @@
+<mujoco model="two_link_matlab_view">
+  <compiler angle="degree" coordinate="local"/>
+  <option timestep="0.001" gravity="0 0 -9.81"/>
+
+  <asset>
+    <mesh name="two_link_mesh" file="../Two_link_model.obj" scale="0.01 0.01 0.01"/>
+  </asset>
+
+  <default>
+    <joint damping="0.05" limited="true"/>
+    <geom type="capsule" rgba="0.7 0.7 0.7 1" density="1200" friction="0.8 0.1 0.1"/>
+  </default>
+
+  <worldbody>
+    <light pos="0 0 4" dir="0 0 -1" directional="true"/>
+    <camera name="overview" pos="1.2 -1.2 1.8" xyaxes="0.707 0.707 0 -0.4 0.4 0.82"/>
+    <geom name="ground" type="plane" pos="0 0 0" size="5 5 0.1" rgba="0.15 0.2 0.25 1"/>
+
+    <!-- Articulated 2-link physics model -->
+    <body name="shoulder" pos="0 0 1.4">
+      <joint name="shoulder_pitch" type="hinge" axis="0 1 0" range="-120 120"/>
+      <geom name="upperarm" fromto="0 0 0 0.32 0 0" size="0.03" density="1050"/>
+      <body name="elbow" pos="0.32 0 0">
+        <joint name="elbow_pitch" type="hinge" axis="0 1 0" range="0 150"/>
+        <geom name="forearm" fromto="0 0 0 0.26 0 0" size="0.025" density="1050"/>
+        <site name="hand" pos="0.26 0 0" size="0.02" rgba="0.2 0.2 1 1"/>
+      </body>
+    </body>
+
+    <!-- Optional mesh-only visual companion -->
+    <body name="matlab_mesh_preview" pos="0.0 1.0 1.0">
+      <geom type="mesh" mesh="two_link_mesh" rgba="0.8 0.8 0.85 0.8" contype="0" conaffinity="0"/>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor name="m_shoulder" joint="shoulder_pitch" ctrllimited="true" ctrlrange="-60 60" gear="1"/>
+    <motor name="m_elbow" joint="elbow_pitch" ctrllimited="true" ctrlrange="-60 60" gear="1"/>
+  </actuator>
+</mujoco>
+

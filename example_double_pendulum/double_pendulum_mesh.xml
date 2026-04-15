@@ -1,0 +1,61 @@
+<mujoco model="double_pendulum_mesh">
+  <compiler angle="radian" coordinate="local" meshdir=".."/>
+
+  <option timestep="0.002" gravity="0 0 -9.81" integrator="RK4"/>
+
+  <visual>
+    <headlight diffuse="0.8 0.8 0.8" ambient="0.2 0.2 0.2" specular="0 0 0"/>
+  </visual>
+
+  <asset>
+    <!-- Placeholder mesh already present in repo root. Replace with link-specific OBJs later. -->
+    <mesh name="link_mesh" file="Two_link_model.obj" scale="0.01 0.01 0.01"/>
+    <material name="mesh_mat1" rgba="0.3 0.6 0.8 1"/>
+    <material name="mesh_mat2" rgba="0.8 0.5 0.3 1"/>
+  </asset>
+
+  <default>
+    <joint limited="false" damping="0.02"/>
+    <geom type="capsule" friction="1 0.1 0.1" density="800"/>
+  </default>
+
+  <worldbody>
+    <light pos="0 0 3"/>
+    <geom name="ground" type="plane" size="2 2 0.1" rgba="0.9 0.9 0.9 1"/>
+    <camera name="main" pos="2.2 -2.2 1.8" xyaxes="0.7 0.7 0  -0.3 0.3 0.9"/>
+
+    <body name="base" pos="0 0 1.5">
+      <site name="pivot" pos="0 0 0" size="0.01" rgba="0 0 0 1"/>
+
+      <body name="link1">
+        <joint name="hinge1" type="hinge" axis="0 1 0"/>
+
+        <!-- Physics/collision geom (simple + stable). -->
+        <geom name="rod1_col" fromto="0 0 0  0 0 -0.6" size="0.04" rgba="0.2 0.5 0.8 1"/>
+
+        <!-- Visual mesh geom (no collision). -->
+        <geom
+          name="rod1_vis"
+          type="mesh"
+          mesh="link_mesh"
+          material="mesh_mat1"
+          contype="0"
+          conaffinity="0"/>
+
+        <body name="link2" pos="0 0 -0.6">
+          <joint name="hinge2" type="hinge" axis="0 1 0"/>
+
+          <geom name="rod2_col" fromto="0 0 0  0 0 -0.6" size="0.04" rgba="0.8 0.4 0.2 1"/>
+          <geom
+            name="rod2_vis"
+            type="mesh"
+            mesh="link_mesh"
+            material="mesh_mat2"
+            contype="0"
+            conaffinity="0"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>
+

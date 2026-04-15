@@ -1,0 +1,19 @@
+<mujoco model="mesh_view">
+  <compiler angle="radian" coordinate="local"/>
+  <option timestep="0.002" gravity="0 0 -9.81"/>
+
+  <asset>
+    <mesh name="two_link_mesh" file="../Two_link_model.obj" scale="0.01 0.01 0.01"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 4" dir="0 0 -1" directional="true"/>
+    <camera name="main" pos="0 -3 1.5" xyaxes="1 0 0 0 0 1"/>
+    <geom type="plane" size="5 5 0.1" rgba="0.18 0.22 0.28 1"/>
+    <body name="mesh_body" pos="0 0 1.0">
+      <freejoint/>
+      <geom type="mesh" mesh="two_link_mesh" rgba="0.75 0.75 0.8 1" contype="0" conaffinity="0"/>
+    </body>
+  </worldbody>
+</mujoco>
+

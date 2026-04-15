@@ -1,0 +1,23 @@
+{
+  "xml": "/Users/uljan/Desktop/Mujoco/example_two_link/two_link_arm.xml",
+  "param_source": "matlab_default",
+  "params": {
+    "l1": 0.3,
+    "l2": 0.35,
+    "m1": 2.0,
+    "m2": 1.5,
+    "lc1": 0.15,
+    "lc2": 0.2,
+    "I1": 0.025,
+    "I2": 0.045,
+    "g": 9.81
+  },
+  "samples": 30,
+  "seed": 0,
+  "qdd_error_l2_mean": 2399.393106704269,
+  "qdd_error_l2_std": 1268.800108851,
+  "inv_fwd_tau_residual_mean": 9.364030196143249e-15,
+  "inv_fwd_tau_residual_std": 9.167159313035744e-15,
+  "mass_matrix_min_eig_min": 0.023839410588558988,
+  "mass_matrix_min_eig_mean": 0.034374915934853575
+}

@@ -1,0 +1,23 @@
+{
+  "xml": "/Users/uljan/Desktop/Mujoco/example_two_link/two_link_arm.xml",
+  "param_source": "from_xml",
+  "params": {
+    "l1": 0.32,
+    "l2": 0.26,
+    "m1": 1.0687698207512475,
+    "m2": 0.6047565858160353,
+    "lc1": 0.16,
+    "lc2": 0.13,
+    "I1": 0.03648067654830925,
+    "I2": 0.01362718173372133,
+    "g": 9.81
+  },
+  "samples": 30,
+  "seed": 0,
+  "qdd_error_l2_mean": 1397.673105954624,
+  "qdd_error_l2_std": 812.5834825201077,
+  "inv_fwd_tau_residual_mean": 4.912681586454172e-15,
+  "inv_fwd_tau_residual_std": 3.824254886899299e-15,
+  "mass_matrix_min_eig_min": 0.011212611390788019,
+  "mass_matrix_min_eig_mean": 0.013699218670056117
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mujoco model="trunk_arm_wrist">
+  <compiler angle="degree" coordinate="local"/>
+  <option timestep="0.002" gravity="0 0 -9.81" integrator="RK4"/>
+  <default>
+    <joint damping="0.2" limited="true"/>
+    <geom type="capsule" rgba="0.7 0.7 0.7 1" density="1050" friction="0.8 0.1 0.1"/>
+  </default>
+
+  <worldbody>
+    <light pos="0 0 4"/>
+    <geom name="ground" type="plane" size="3 3 0.1" rgba="0.9 0.9 0.9 1"/>
+
+    <body name="trunk" pos="0 0 1.0">
+      <joint name="trunk_yaw" type="hinge" axis="0 0 1" range="-90 90" damping="0.2"/>
+      <geom name="trunk_geom" fromto="0 0 0 0 0 0.35" size="0.09" rgba="0.5 0.4 0.3 1"/>
+
+      <body name="shoulder" pos="0 0 0.35">
+        <joint name="shoulder_pitch" type="hinge" axis="0 1 0" range="-120 120"/>
+        <geom name="upperarm" fromto="0 0 0 0.32 0 0" size="0.03" density="1050"/>
+        <body name="elbow" pos="0.32 0 0">
+          <joint name="elbow_pitch" type="hinge" axis="0 1 0" range="0 150"/>
+          <geom name="forearm" fromto="0 0 0 0.26 0 0" size="0.025" density="1050"/>
+          <body name="wrist" pos="0.26 0 0">
+            <joint name="wrist_ps" type="hinge" axis="1 0 0" range="-120 120"/>
+            <site name="hand" pos="0 0 0" size="0.015" rgba="0.2 0.2 1 1"/>
+            <geom name="racket_shaft" fromto="0 0 0 0.40 0 0" size="0.012" rgba="0.2 0.6 0.3 1"/>
+            <site name="racket_tip" pos="0.40 0 0" size="0.012" rgba="1 0.2 0.2 1"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor name="m_trunk" joint="trunk_yaw" ctrllimited="true" ctrlrange="-80 80" gear="1"/>
+    <motor name="m_shoulder" joint="shoulder_pitch" ctrllimited="true" ctrlrange="-60 60" gear="1"/>
+    <motor name="m_elbow" joint="elbow_pitch" ctrllimited="true" ctrlrange="-60 60" gear="1"/>
+    <motor name="m_wrist" joint="wrist_ps" ctrllimited="true" ctrlrange="-20 20" gear="1"/>
+  </actuator>
+</mujoco>

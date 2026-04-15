@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Two-link planar arm in MJCF format.
+  Follows MuJoCo Modeling Guide: https://mujoco.readthedocs.io/en/stable/modeling.html
+
+  Key concepts used:
+  - Kinematic tree: nested body elements, worldbody as root (Modeling > Kinematic tree)
+  - Default settings: joint damping/limited, geom type/rgba/density/friction (Default settings)
+  - Motor actuator shortcut with ctrlrange (Actuators > Shortcuts)
+  - Local coordinates, angles in degrees (Coordinate frames, compiler/angle)
+-->
+<mujoco model="two_link_arm">
+  <compiler angle="degree" coordinate="local"/>
+  <option timestep="0.001" gravity="0 0 -9.81" integrator="implicitfast"/>
+  <default>
+    <joint damping="0.12" limited="true"/>
+    <geom type="capsule" rgba="0.7 0.7 0.7 1" density="1200" friction="0.8 0.1 0.1"/>
+  </default>
+
+  <worldbody>
+    <body name="shoulder" pos="0 0 1.4">
+      <joint name="shoulder_pitch" type="hinge" axis="0 1 0" range="-120 120"/>
+      <geom name="upperarm" fromto="0 0 0 0.32 0 0" size="0.03" density="1050"/>
+      <body name="elbow" pos="0.32 0 0">
+        <joint name="elbow_pitch" type="hinge" axis="0 1 0" range="0 150"/>
+        <geom name="forearm" fromto="0 0 0 0.26 0 0" size="0.025" density="1050"/>
+        <site name="hand" pos="0.26 0 0" size="0.02" rgba="0.2 0.2 1 1"/>
+      </body>
+    </body>
+    <site name="target" pos="0.50 0.10 1.20" size="0.02" rgba="1 0 0 1"/>
+  </worldbody>
+
+  <actuator>
+    <motor name="m_shoulder" joint="shoulder_pitch" ctrllimited="true" ctrlrange="-60 60" gear="1"/>
+    <motor name="m_elbow" joint="elbow_pitch" ctrllimited="true" ctrlrange="-60 60" gear="1"/>
+  </actuator>
+</mujoco>

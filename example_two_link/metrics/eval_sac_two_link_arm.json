@@ -1,0 +1,112 @@
+{
+  "checkpoint": "sac_two_link_arm.zip",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "episodes_per_seed": 2,
+  "n_episodes": 10,
+  "mean_return": -22.02956198478142,
+  "std_return": 0.2690411069779269,
+  "mean_final_dist": 0.10007793083786964,
+  "std_final_dist": 1.0405503374492192e-07,
+  "success_rate": 0.0,
+  "episodes": [
+    {
+      "episode_return": -21.883490020821675,
+      "steps": 100,
+      "final_dist": 0.10007791966199875,
+      "max_torque": 4.107872009277344,
+      "max_speed": 8.993374325287276e-05,
+      "success_steps": 0,
+      "seed": 0
+    },
+    {
+      "episode_return": -21.789786601829377,
+      "steps": 100,
+      "final_dist": 0.10007786750793457,
+      "max_torque": 4.107856750488281,
+      "max_speed": 4.924156284057117e-06,
+      "success_steps": 0,
+      "seed": 1
+    },
+    {
+      "episode_return": -21.77137485781743,
+      "steps": 100,
+      "final_dist": 0.10007791221141815,
+      "max_torque": 4.107879638671875,
+      "max_speed": 7.537347357703887e-05,
+      "success_steps": 0,
+      "seed": 1000
+    },
+    {
+      "episode_return": -22.175984931802706,
+      "steps": 100,
+      "final_dist": 0.10007797926664352,
+      "max_torque": 4.107887268066406,
+      "max_speed": 0.0001821463843414926,
+      "success_steps": 0,
+      "seed": 1001
+    },
+    {
+      "episode_return": -21.743871659152237,
+      "steps": 100,
+      "final_dist": 0.10007788985967636,
+      "max_torque": 4.1078643798828125,
+      "max_speed": 2.6718243411610547e-05,
+      "success_steps": 0,
+      "seed": 2000
+    },
+    {
+      "episode_return": -22.281799474267512,
+      "steps": 100,
+      "final_dist": 0.1000780239701271,
+      "max_torque": 4.107913970947266,
+      "max_speed": 0.0002547639476123054,
+      "success_steps": 0,
+      "seed": 2001
+    },
+    {
+      "episode_return": -22.095949495335823,
+      "steps": 100,
+      "final_dist": 0.10007800161838531,
+      "max_torque": 4.107902526855469,
+      "max_speed": 0.00020644240421785928,
+      "success_steps": 0,
+      "seed": 3000
+    },
+    {
+      "episode_return": -22.225536259235945,
+      "steps": 100,
+      "final_dist": 0.10007770359516144,
+      "max_torque": 4.107734680175781,
+      "max_speed": 0.00022208299123972075,
+      "success_steps": 0,
+      "seed": 3001
+    },
+    {
+      "episode_return": -21.756025311955916,
+      "steps": 100,
+      "final_dist": 0.10007789731025696,
+      "max_torque": 4.107879638671875,
+      "max_speed": 3.159947453971361e-05,
+      "success_steps": 0,
+      "seed": 4000
+    },
+    {
+      "episode_return": -22.571801235595597,
+      "steps": 100,
+      "final_dist": 0.10007811337709427,
+      "max_torque": 4.107963562011719,
+      "max_speed": 0.0003819318047063958,
+      "success_steps": 0,
+      "seed": 4001
+    }
+  ],
+  "bridge_tau_residual_mean": 1.7485376379590076e-15,
+  "bridge_tau_residual_std": 1.059990059534568e-15,
+  "bridge_param_source": "matlab_default"
+}

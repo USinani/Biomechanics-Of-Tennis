@@ -1,0 +1,85 @@
+{
+  "model_name": "two_link_arm",
+  "gravity": [0.0, 0.0, -9.81],
+  "timestep": 0.001,
+  "shoulder_height": 1.4,
+  "links": [
+    {
+      "name": "upperarm",
+      "parent": "shoulder",
+      "length": 0.32,
+      "radius": 0.03,
+      "density": 1050.0,
+      "mass": null,
+      "inertia": null
+    },
+    {
+      "name": "forearm",
+      "parent": "elbow",
+      "length": 0.26,
+      "radius": 0.025,
+      "density": 1050.0,
+      "mass": null,
+      "inertia": null
+    }
+  ],
+  "joints": [
+    {
+      "name": "shoulder_pitch",
+      "type": "hinge",
+      "parent_body": "shoulder",
+      "child_body": "elbow",
+      "axis": [0.0, 1.0, 0.0],
+      "pos": [0.0, 0.0, 0.0],
+      "range_deg": [-120.0, 120.0],
+      "damping": 0.05
+    },
+    {
+      "name": "elbow_pitch",
+      "type": "hinge",
+      "parent_body": "elbow",
+      "child_body": null,
+      "axis": [0.0, 1.0, 0.0],
+      "pos": [0.32, 0.0, 0.0],
+      "range_deg": [0.0, 150.0],
+      "damping": 0.05
+    }
+  ],
+  "sites": [
+    {
+      "name": "hand",
+      "parent_body": "elbow",
+      "pos": [0.26, 0.0, 0.0],
+      "size": 0.02
+    },
+    {
+      "name": "target",
+      "parent_body": "world",
+      "pos": [0.50, 0.10, 1.20],
+      "size": 0.02
+    }
+  ],
+  "actuators": [
+    {
+      "name": "m_shoulder",
+      "joint": "shoulder_pitch",
+      "ctrlrange": [-60.0, 60.0],
+      "gear": 1.0
+    },
+    {
+      "name": "m_elbow",
+      "joint": "elbow_pitch",
+      "ctrlrange": [-60.0, 60.0],
+      "gear": 1.0
+    }
+  ],
+  "contact": {
+    "geom_defaults": {
+      "type": "capsule",
+      "rgba": [0.7, 0.7, 0.7, 1.0],
+      "density": 1200.0,
+      "friction": [0.8, 0.1, 0.1]
+    }
+  }
+}
+
