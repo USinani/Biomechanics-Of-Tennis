@@ -31,11 +31,11 @@ This is the recurring project sync document for the master orchestrator, custom 
 ### Status
 - Core implementation completed for Python/MuJoCo parity workflow.
 - Gated comparison run executed and timing sweep/plot regeneration completed after gate pass.
-- Native MATLAB execution remains pending due missing local MATLAB CLI.
+- Native MATLAB parity execution is now available via app-bundle launcher and has been validated.
 
 ### Blockers
-- Local environment blocker: `matlab` executable unavailable for native MATLAB parity run.
 - Strict production gate thresholds still need review; current pass used trend-level relaxed thresholds.
+- Residual strict-gate mismatch remains and requires further model-parameter reconciliation.
 
 ### Decisions
 - MATLAB native simulation is the parity reference.
@@ -43,7 +43,7 @@ This is the recurring project sync document for the master orchestrator, custom 
 - Timing-sweep re-run is explicitly blocked until parity readiness criteria are met.
 
 ### Next 48h
-- Execute native MATLAB parity script on MATLAB-enabled host and export canonical parity timeseries.
+- Re-run `systematic_studies/run_native_matlab_parity.py` after each physics/parameter tweak.
 - Re-run `compare_signals.py` against MATLAB-vs-MuJoCo canonical data.
 - Lock strict parity thresholds and rerun validated timing sweep under final gate settings.
 - Publish refreshed stakeholder artifact bundle with updated decisions and residual risks.
@@ -63,6 +63,7 @@ Parity is considered ready only when all conditions are met:
 - Signal comparison plot: `/Users/uljan/Desktop/Mujoco/systematic_studies/outputs/figures/compare_signals.png`
 - Signal diagnostics: `/Users/uljan/Desktop/Mujoco/systematic_studies/outputs/compare_signals_metrics.json`
 - Regenerated timing/summary plots: `/Users/uljan/Desktop/Mujoco/systematic_studies/outputs/figures/timing_vs_velocity.png`, `/Users/uljan/Desktop/Mujoco/systematic_studies/outputs/figures/energy_vs_timing.png`, `/Users/uljan/Desktop/Mujoco/systematic_studies/outputs/figures/summary_figure.png`
+- Native MATLAB-vs-MuJoCo comparison: `/Users/uljan/Desktop/Mujoco/systematic_studies/outputs/figures/compare_signals_matlab_vs_mujoco.png`, `/Users/uljan/Desktop/Mujoco/systematic_studies/outputs/compare_signals_matlab_vs_mujoco_metrics.json`
 
 ## Gap Register (Live)
 ### Open Gaps
@@ -70,7 +71,7 @@ Parity is considered ready only when all conditions are met:
 - [x] Direct four-panel signal comparator script (`compare_signals.py`) implemented.
 - [x] Integrator and damping explicitly synchronized in both parity MuJoCo XML models.
 - [ ] Final strict pass/fail thresholds for spike/smoothness still need lock-in.
-- [ ] Native MATLAB parity run still pending due local environment availability.
+- [ ] Residual strict-gate mismatch still above closure criteria.
 
 ### Resolved Gaps
 - MuJoCo runtime state-unit mismatch fixed in benchmark pipeline.
@@ -136,3 +137,4 @@ Copy this block for each new weekly entry.
 ## Change Log
 - 2026-04-15: Converted master report into recurring weekly operating format with fixed sync sections.
 - 2026-04-15: Updated with implementation results, generated artifacts, and remaining MATLAB/threshold blockers.
+- 2026-04-15: MATLAB runner added and validated; blocker shifted from tooling to residual model mismatch.

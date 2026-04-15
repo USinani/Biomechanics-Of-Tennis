@@ -19,7 +19,7 @@ Track technical parity closure with enough detail to reproduce decisions, diagno
 
 ## Technical Status
 - Python/MuJoCo parity implementation completed and exercised.
-- Remaining gap is native MATLAB execution validation in this environment.
+- Native MATLAB parity execution validated through app-bundle launcher.
 
 ## Active Workstreams
 1. Canonical data contract (units/time/control).
@@ -38,8 +38,8 @@ Track technical parity closure with enough detail to reproduce decisions, diagno
 - [x] Canonical CSV schema unified for benchmark export and MATLAB parity bridge points.
 - [x] `compare_signals.py` implemented and producing four-panel overlays.
 - [x] Integrator explicitly pinned in both target MuJoCo XML files.
-- [ ] Native MATLAB parity execution still pending on a host with MATLAB CLI.
 - [ ] Final strict spike/smoothness thresholds still need sign-off.
+- [ ] Residual MATLAB-vs-MuJoCo mismatch still above strict gate limits.
 
 ## Current Hypotheses (Ranked)
 1. Parameterization differences (bridge inertia/length assumptions vs MuJoCo multibody model) dominate residual mismatch.
@@ -83,6 +83,7 @@ Parity ready only when all pass:
 - Added bridge-gate diagnostics in benchmark summary (`velocity_spike_count`, jerk outliers, gate flag).
 - Updated MATLAB parity script to enforce dt/duration checks, torque-profile replay checks, and canonical parity timeseries export.
 - Added `run_validated_timing_sweep.py` to block sweeps when parity gate fails.
+- Added `run_native_matlab_parity.py` to run native MATLAB parity without requiring `matlab` on PATH; verified on `/Applications/MATLAB_R2025a.app/bin/matlab`.
 
 ## Weekly Update Template
 ### Week Ending

@@ -93,6 +93,22 @@ python systematic_studies/compare_signals.py \
 python systematic_studies/run_validated_timing_sweep.py --outputs-dir systematic_studies/outputs
 ```
 
+### Native MATLAB parity (no PATH requirement)
+
+If MATLAB is installed as an app bundle on macOS but `matlab` is not on PATH, use:
+
+```bash
+python systematic_studies/run_native_matlab_parity.py
+```
+
+This script auto-detects MATLAB (for example `/Applications/MATLAB_R2025a.app/bin/matlab`), runs `Matlab_v2/benchmark_mujoco_parity.m`, and then runs `compare_signals.py` on the generated native MATLAB parity CSV.
+
+Optional explicit binary:
+
+```bash
+python systematic_studies/run_native_matlab_parity.py --matlab-bin /Applications/MATLAB_R2025a.app/bin/matlab
+```
+
 ## Commands (from repo root)
 
 ```bash

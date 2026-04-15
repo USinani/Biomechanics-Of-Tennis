@@ -30,8 +30,8 @@ Provide a concise weekly view of parity progress, decisions, risks, and immediat
 - Synchronized MuJoCo physics settings (integrator + damping) across both two-link XML models.
 
 ## Top Blockers
-- Native MATLAB CLI is unavailable in current environment (`matlab` command not found), so MATLAB parity run could not be executed locally.
 - Final strict gate thresholds still need supervisor/custom-AI review (current run used relaxed trend thresholds).
+- Residual MATLAB-vs-MuJoCo mismatch remains above strict gate limits and needs parameter/model reconciliation.
 
 ## Critical Decisions
 - Native MATLAB simulation is the parity reference.
@@ -44,7 +44,7 @@ Provide a concise weekly view of parity progress, decisions, risks, and immediat
 - Numerical artifact risk from integrator/damping differences.
 
 ## Next 48 Hours
-- Execute native MATLAB parity benchmark on a MATLAB-enabled machine and export `parity_timeseries.csv`.
+- Use `systematic_studies/run_native_matlab_parity.py` for native MATLAB parity reruns and artifact refresh.
 - Re-run `compare_signals.py` against MATLAB-vs-MuJoCo data (not bridge-vs-MuJoCo fallback).
 - Finalize and lock strict parity gate thresholds, then re-run gated timing sweep.
 
@@ -61,3 +61,4 @@ Provide a concise weekly view of parity progress, decisions, risks, and immediat
 ## Change Log
 - 2026-04-15: Initial executive summary template and first weekly entry.
 - 2026-04-15: Updated with implementation progress, gating run results, and MATLAB execution blocker.
+- 2026-04-15: MATLAB tooling blocker removed via app-bundle auto-discovery launcher.
