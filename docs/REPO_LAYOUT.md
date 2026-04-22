@@ -17,7 +17,9 @@ later (larger) reorg, a **migration log**, and a **deferred moves** TODO list.
    `arm_env.py` import graph, `example_two_link/` paths baked into metrics
    files) is moved only when we can do it in one atomic PR with tests.
 4. **Outputs never leave `systematic_studies/outputs/`.** Figures, CSVs, and
-   JSON summaries have a single home; reports link into it.
+   JSON summaries have a single home; reports link into it. The canonical
+   report directory is `systematic_studies/outputs/reports/`, populated by
+   `systematic_studies/weekly_dashboard.py`.
 
 ## 2. Current state (post 2026-04-22 reorg)
 
@@ -64,13 +66,16 @@ Mujoco/
 |-- systematic_studies/         study pipeline (headless + viewer demos)
 |   |-- README.md               commands + slide mapping
 |   |-- racket_trajectory.py    NEW: racket / figure-8 visualiser
+|   |-- mutual_motor_learning.py NEW: two-agent shared control (RT vs Static)
 |   |-- swing_benchmark_mujoco_vs_bridge.py
 |   |-- run_validated_timing_sweep.py
 |   |-- run_native_matlab_parity.py
 |   |-- compare_signals.py
 |   |-- visualisation/plot_results.py     unified plotting entry point
+|   |-- weekly_dashboard.py     NEW: renders the weekly HTML dashboard
 |   |-- outputs/                CSV + JSON outputs
 |       |-- figures/            all publication PNGs live here
+|       |-- reports/            NEW: weekly_dashboard_<ISO-week>_<YYYY-MM-DD>.html reports
 |
 |-- Matlab_v2/                  MATLAB ground-truth code (unchanged)
 |-- project_updates/            week-by-week narrative updates

@@ -35,11 +35,41 @@ Or use the `run.sh` helper:
 ./run.sh systematic_studies/racket_trajectory.py --protocol workspace_figure8 --mode viewer --steps 10000
 ```
 
+**Mutual motor learning** (supervisor direction: Reinforced Turn-take vs Static, two-agent shared control with an adaptive virtual-spring stiffness schedule; see [docs/PHD_DIRECTIONS.md](docs/PHD_DIRECTIONS.md) §0a):
+
+```bash
+# Equal-control baseline (both agents constant K)
+./run.sh systematic_studies/mutual_motor_learning.py --mode static --run-mode plot --steps 10000
+
+# Reinforced Turn-take (sine-wave spring-length handover)
+./run.sh systematic_studies/mutual_motor_learning.py --mode rt --run-mode plot --steps 10000
+
+# With an impulse disturbance at t=3.0s
+./run.sh systematic_studies/mutual_motor_learning.py --mode rt --run-mode plot --perturb-mode impulse --perturb-amp-nm 6
+```
+
+Outputs: `systematic_studies/outputs/mutual_motor_learning_<mode>_timeseries.csv`, `..._summary.json`, and `systematic_studies/outputs/figures/mutual_motor_learning_<mode>.png`.
+
 To generate presentation-ready figures from systematic study CSV outputs:
 
 ```bash
 python systematic_studies/visualisation/plot_results.py
 ```
+
+**Weekly dashboard** (regenerate all figures + render a single portable HTML report with embedded PNGs, JSON summary tables, and the current-week markdown):
+
+```bash
+# Build + open the HTML report in your default browser
+./run.sh systematic_studies/weekly_dashboard.py
+
+# Build only; do not open a browser (useful over SSH / CI)
+./run.sh systematic_studies/weekly_dashboard.py --no-open
+
+# Override the report date (e.g. rebuild last Monday's dashboard)
+./run.sh systematic_studies/weekly_dashboard.py --no-open --date 2026-04-22
+```
+
+Output path: `systematic_studies/outputs/reports/weekly_dashboard_<ISO-week>_<YYYY-MM-DD>.html`.
 
 **Important (macOS):** The MuJoCo viewer requires `mjpython`, not `python`. The `run.sh` script automatically uses `mjpython` for viewer scripts on macOS.
 

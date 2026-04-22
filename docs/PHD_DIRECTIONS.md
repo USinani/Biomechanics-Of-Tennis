@@ -1,7 +1,106 @@
 # PhD Directions for the Two-Link MuJoCo + MATLAB Parity Project
 
-_Drafted 2026-04-22. This is a living research-agenda document, not a
-specification. Revise as the project matures._
+_Drafted 2026-04-22; extended 2026-04-22 with supervisor direction on
+mutual motor learning and adaptive control. Living research-agenda
+document, not a specification. Revise as the project matures._
+
+## 0a. Supervisor direction: mutual motor learning and adaptive control (2026-04-22)
+
+> "This investigation delineates the control boundaries of motor
+> learning within paired interaction tasks, establishing a novel
+> benchmark for the development of collaborative haptic systems and
+> rehabilitative robotics. Rather than observing passive coordination,
+> this project establishes a framework for optimizing skill acquisition
+> through structured control handover." — supervisor, 2026-04-22.
+
+The supervisor's reframing promotes a paired / shared-control paradigm
+to the headline research question. The existing two-link arm + MATLAB
+parity harness is then positioned as the _mechanical substrate_ on
+which the following control-handover question is interrogated:
+
+**Primary strategic objective.** Evaluate the efficacy of the
+**Reinforced Turn-take (RT)** mode against the **Static (Equal-Control)**
+mode in facilitating skill transfer and environmental adaptation when
+two agents share control of the same mechanical plant under external
+disturbance.
+
+Concrete instantiation adopted for this repo:
+
+- **Plant.** The existing `example_two_link/two_link_arm.xml` two-link
+  planar arm (single source of truth; no MJCF fork needed).
+- **Two agents.** Agent `A` and agent `B` each carry an internal
+  reference trajectory `q_A^*(t)` and `q_B^*(t)`; differences between
+  them model motor-command disagreement.
+- **Coupling.** A virtual-spring PD controller per agent applies
+  torque `tau_i(t) = K_i(t) * (q_i^*(t) - q(t)) - D_i(t) * qdot(t)`.
+  Agents' torques are additive at the joint: `tau = tau_A + tau_B + w(t)`
+  where `w(t)` is an exogenous disturbance.
+- **Control-handover modes.**
+  1. **Static:** `K_A = K_B = K_eq` constant; neither agent dominates.
+  2. **Reinforced Turn-take (RT):** `K_A(t)` and `K_B(t)` oscillate in
+     anti-phase at `f_rt` Hz, modulated by a sine-wave spring-length
+     schedule:
+
+     ```
+     L_i(t) = L_0 + DeltaL * sin(2*pi*f_rt*t + phi_i)
+     K_i(t) = K_ref * (L_0 / L_i(t))    # short spring => high stiffness
+     ```
+
+     with `phi_A = 0` and `phi_B = pi` so that dominance transfers
+     back and forth each half-period. `dominance_A(t) = K_A(t) / (K_A(t) + K_B(t))`
+     is the scalar metric of interest.
+
+### Acceptance criteria for the RT-vs-Static benchmark
+
+- A single command produces a comparable pair of runs:
+
+  ```
+  ./run.sh systematic_studies/mutual_motor_learning.py --mode static --perturb-mode impulse
+  ./run.sh systematic_studies/mutual_motor_learning.py --mode rt     --perturb-mode impulse
+  ```
+
+- Both runs log joint state, per-agent reference, per-agent stiffness,
+  dominance share, tracking errors, and the exogenous disturbance time
+  series to `systematic_studies/outputs/`.
+- A plot bundle shows stiffness-vs-time, dominance-vs-time, tracking
+  error per agent, and joint trajectory vs. both references, for each
+  mode. These populate Paper-4 figures below.
+
+### Risks and supervisor asks
+
+1. Confirm whether the two "agents" should eventually be instantiated
+   as (i) two analytical PD controllers (current scope), (ii) one
+   analytical + one SAC residual agent, or (iii) two SAC residual
+   agents. The prototype supports (i) and trivially extends to (ii).
+2. Confirm the disturbance protocol(s): impulse, sinusoid, or stochastic
+   noise. A single default is chosen for the prototype; the supervisor
+   should anchor the publishable protocol.
+3. Agree on a skill-transfer metric. Default below is **normalised
+   RMS tracking error on the second half of the episode**, but the
+   learning-efficacy story may need a dedicated pre/post-perturbation
+   delta.
+
+### Linking to existing workstreams
+
+- The parity gate (Section 2.1 below) **remains a hard prerequisite**:
+  any claim comparing RT and Static hinges on a mechanically consistent
+  plant. The SysID loop closes before any RT-vs-Static statistics are
+  reported.
+- The figure-8 / infinity trajectory is reused as a default reference
+  for both agents so the same plant dynamics are exercised as in the
+  2026-04-22 visualiser. Agent `B` uses a phase-shifted copy to
+  engineer disagreement without changing task complexity.
+
+### New mini-paper prospect (Paper 4)
+
+> **Paper 4 (journal, strategic).**
+> _Reinforced Turn-take vs equal-control handover: a simulated
+> collaborative benchmark for two-agent skill transfer under
+> disturbance._
+>
+> Depends on: closed strict parity gate; mutual-motor-learning
+> prototype (`systematic_studies/mutual_motor_learning.py`); a
+> formalised skill-transfer metric.
 
 ## 0. Positioning
 
@@ -160,6 +259,12 @@ engineering artefact" to "PhD-thesis-grade scientific contribution".
   parameter sweep (e.g. over `f_hz`) and writes a tidy CSV suitable for
   a peak-speed-vs-frequency plot.
 - Add sensitivity analysis (Task 2.3) as a dedicated study.
+- **Mutual motor learning prototype (supervisor direction, Section 0a).**
+  Ship `systematic_studies/mutual_motor_learning.py` with `--mode static`
+  and `--mode rt`, plus a disturbance injector; generate a
+  stiffness/dominance/tracking-error panel for each mode. First RT-vs-Static
+  comparison does NOT yet support a publishable claim (parity gate blocking),
+  but establishes the pipeline end-to-end.
 
 ## 8. Supervisor "asks"
 
