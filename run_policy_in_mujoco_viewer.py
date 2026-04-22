@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import os
 import time
+from pathlib import Path
 from typing import Optional
 
 import mujoco
@@ -10,8 +12,21 @@ from stable_baselines3 import SAC
 from arm_env import ArmSwingEnv, make_arm_env_from_json
 
 
+_DEFAULT_CKPT_CANDIDATES = (
+    Path(__file__).resolve().parent / "checkpoints" / "sac_two_link_arm",
+    Path(__file__).resolve().parent / "sac_two_link_arm",
+)
+
+
+def _resolve_default_checkpoint() -> str:
+    for cand in _DEFAULT_CKPT_CANDIDATES:
+        if cand.with_suffix(".zip").exists() or cand.exists():
+            return str(cand)
+    return str(_DEFAULT_CKPT_CANDIDATES[0])
+
+
 def run_viewer_with_policy(
-    model_path: str = "sac_two_link_arm",
+    model_path: Optional[str] = None,
     use_json_model: bool = False,
     total_sim_time: Optional[float] = None,
 ) -> None:
@@ -21,6 +36,8 @@ def run_viewer_with_policy(
     else:
         env = ArmSwingEnv()
 
+    if model_path is None:
+        model_path = _resolve_default_checkpoint()
     model = SAC.load(model_path)
 
     ctrl_dt = 1.0 / env.ctrl_rate

@@ -3,7 +3,7 @@
   <option timestep="0.002" gravity="0 0 -9.81"/>
 
   <asset>
-    <mesh name="two_link_mesh" file="../Two_link_model.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="two_link_mesh" file="../assets/meshes/Two_link_model.obj" scale="0.01 0.01 0.01"/>
   </asset>
 
   <worldbody>

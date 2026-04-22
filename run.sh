@@ -26,6 +26,14 @@ if [[ "$(uname)" == "Darwin" ]] && [[ -x "$MJPYTHON" ]]; then
   if [[ "$1" == "view_dummy_two_link_obj.py" ]] && [[ "$2" == "--check-only" ]]; then
     exec "$PYTHON" "$@"
   fi
+  # racket_trajectory.py only needs mjpython when invoked with --mode viewer.
+  if [[ "$1" == "systematic_studies/racket_trajectory.py" ]]; then
+    if [[ " $* " == *" --mode viewer "* ]]; then
+      exec "$MJPYTHON" "$@"
+    else
+      exec "$PYTHON" "$@"
+    fi
+  fi
   case "$1" in
     view_mujoco_arm.py|view_3d_two_link_model.py|view_dummy_two_link_obj.py|run_policy_in_mujoco_viewer.py|example_two_link/run_example.py|example_two_link/view.py|example_two_link/view_mesh.py|example_two_link/play_matlab_bridge.py|example_double_pendulum/run_example.py|example_double_pendulum/view_mesh.py|example_double_pendulum/free_swing.py|example_double_pendulum/forward_swing.py|example_double_pendulum/backward_swing.py|example_double_pendulum/muscle_control.py|systematic_studies/run_trunk_arm_demo.py|systematic_studies/visual_showcase.py|systematic_studies/view_swing_protocol.py|systematic_studies/sim_parameter_lab.py)
       exec "$MJPYTHON" "$@"

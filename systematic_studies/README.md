@@ -10,6 +10,7 @@ Reproducible sweeps and benchmarks aligned with PhD systematic-study tasks. This
 | MATLAB model vs MuJoCo (same window, torques) | `swing_benchmark_mujoco_vs_bridge.py` (time series + RMSE; uses Python port of MATLAB_v2, not the MATLAB engine) |
 | Pronation/supination vs speed proxy | `models/trunk_arm_wrist.xml` + `pronation_supination_sweep.py` |
 | Whole-body rotation (trunk + arm) | `models/trunk_arm_wrist.xml` + `run_trunk_arm_demo.py` |
+| Racket / end-effector trajectory + figure-8 (infinity) motion | `racket_trajectory.py` |
 
 ## Visual demos (MuJoCo viewer)
 
@@ -92,6 +93,44 @@ python systematic_studies/compare_signals.py \
 # 3) Run timing sweeps only if parity_ready=true in compare_signals_metrics.json
 python systematic_studies/run_validated_timing_sweep.py --outputs-dir systematic_studies/outputs
 ```
+
+### Racket trajectory and figure-8 motion
+
+`racket_trajectory.py` drives the two-link arm so the racket tip traces an
+infinity / figure-8 in the X-Z plane, then logs the trajectory and produces
+slide-ready figures.
+
+Protocols:
+
+- `workspace_figure8` (default): workspace-level Lissajous (`x = sin(omega t)`,
+  `z = sin(2 omega t)`), back-solved through inverse kinematics, then PD-tracked.
+  Produces the cleanest infinity trace.
+- `figure8`: joint-space Lissajous 2:1 (`q1 ~ sin(omega t)`, `q2 ~ sin(2 omega t + pi/2)`),
+  PD-tracked. Trace shape depends on arm geometry but the joint signals are pure sinusoids.
+- `open_loop_lissajous`: open-loop sinusoidal torques only (no tracking).
+- `passive`: gravity only (baseline sanity).
+
+Run modes:
+
+```bash
+# Headless: write CSV + summary JSON
+./run.sh systematic_studies/racket_trajectory.py --protocol workspace_figure8 --mode headless --steps 10000
+
+# Plot: also write the figure-8 trace and joint/speed-vs-time PNGs
+./run.sh systematic_studies/racket_trajectory.py --protocol workspace_figure8 --mode plot --steps 10000
+
+# Viewer: open the MuJoCo passive viewer alongside live trace capture (macOS uses mjpython)
+./run.sh systematic_studies/racket_trajectory.py --protocol workspace_figure8 --mode viewer --steps 10000
+```
+
+Outputs:
+
+- `systematic_studies/outputs/racket_trajectory_timeseries.csv`
+- `systematic_studies/outputs/racket_trajectory_summary.json` (includes `figure8_detected`, FFT freq ratio, self-intersections)
+- `systematic_studies/outputs/figures/racket_trajectory_xz.png`
+- `systematic_studies/outputs/figures/racket_trajectory_joint_vs_time.png`
+
+The shared `plot_results.py` will also pick up these CSVs automatically when present.
 
 ### Native MATLAB parity (no PATH requirement)
 

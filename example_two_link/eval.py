@@ -142,6 +142,14 @@ def main() -> None:
     ckpt = Path(args.checkpoint)
     if ckpt.suffix != ".zip" and (ckpt.with_suffix(".zip")).exists():
         ckpt = ckpt.with_suffix(".zip")
+    # Backward-compat: if user passed a bare stem (e.g. "sac_two_link_arm"),
+    # also look under the canonical checkpoints/ directory after the 2026-04-22 reorg.
+    if not ckpt.exists():
+        candidate = ROOT / "checkpoints" / ckpt.name
+        if candidate.exists():
+            ckpt = candidate
+        elif candidate.with_suffix(".zip").exists():
+            ckpt = candidate.with_suffix(".zip")
 
     env = ArmSwingEnv(
         mjcf_path=str(MJCF_PATH),

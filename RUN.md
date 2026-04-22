@@ -22,6 +22,19 @@ Or use the `run.sh` helper:
 
 **Systematic studies** (sweeps/benchmarks, headless; visual demos in viewer): see [systematic_studies/README.md](systematic_studies/README.md).
 
+**Racket / end-effector figure-8 (infinity) trajectory** (cleanest single-script demo):
+
+```bash
+# Headless: CSV + JSON only
+./run.sh systematic_studies/racket_trajectory.py --protocol workspace_figure8 --mode headless --steps 10000
+
+# Plot: also write racket_trajectory_xz.png and racket_trajectory_joint_vs_time.png
+./run.sh systematic_studies/racket_trajectory.py --protocol workspace_figure8 --mode plot --steps 10000
+
+# Viewer: open MuJoCo viewer alongside live capture (macOS uses mjpython)
+./run.sh systematic_studies/racket_trajectory.py --protocol workspace_figure8 --mode viewer --steps 10000
+```
+
 To generate presentation-ready figures from systematic study CSV outputs:
 
 ```bash
@@ -76,7 +89,7 @@ Notes:
 
 ## 4. Visualize trained policy
 
-After training (or if `sac_two_link_arm.zip` exists):
+After training (or if `checkpoints/sac_two_link_arm.zip` exists):
 
 ```bash
 ./run.sh run_policy_in_mujoco_viewer.py

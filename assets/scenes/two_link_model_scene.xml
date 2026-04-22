@@ -7,8 +7,8 @@
   </visual>
 
   <asset>
-    <!-- OBJ from 3D_model folder -->
-    <mesh name="two_link_mesh" file="Two_link_model.obj" scale="0.01 0.01 0.01"/>
+    <!-- OBJ imported from assets/meshes/ -->
+    <mesh name="two_link_mesh" file="../meshes/Two_link_model.obj" scale="0.01 0.01 0.01"/>
   </asset>
 
   <worldbody>

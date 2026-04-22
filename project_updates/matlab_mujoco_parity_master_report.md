@@ -138,3 +138,4 @@ Copy this block for each new weekly entry.
 - 2026-04-15: Converted master report into recurring weekly operating format with fixed sync sections.
 - 2026-04-15: Updated with implementation results, generated artifacts, and remaining MATLAB/threshold blockers.
 - 2026-04-15: MATLAB runner added and validated; blocker shifted from tooling to residual model mismatch.
+- 2026-04-22: Racket / figure-8 end-effector visualiser (`systematic_studies/racket_trajectory.py`) added as a tracked artefact alongside the parity program; does NOT affect the strict gate status. Safe directory reorg executed (assets/, checkpoints/, docs/); all parity artefact paths unchanged. Consolidated project update published in `project_updates/2026-04-22_project_consolidation_and_racket_viz.md`.

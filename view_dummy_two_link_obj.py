@@ -9,17 +9,17 @@ import mujoco.viewer
 
 def resolve_asset() -> Path:
     root = Path(__file__).resolve().parent
-    # Preferred root-level scene (current canonical path)
-    root_xml = root / "dummy_two_link_obj_view.xml"
-    # Backward-compatible fallback for older folder layout
-    legacy_xml = root / "3D_model" / "dummy_two_link_obj_view.xml"
-    if root_xml.exists():
-        return root_xml
-    if legacy_xml.exists():
-        return legacy_xml
+    # Canonical location after the 2026-04-22 reorg.
+    canonical_xml = root / "assets" / "scenes" / "dummy_two_link_obj_view.xml"
+    # Backward-compatible fallbacks for older checkouts.
+    root_legacy = root / "dummy_two_link_obj_view.xml"
+    deep_legacy = root / "3D_model" / "dummy_two_link_obj_view.xml"
+    for candidate in (canonical_xml, root_legacy, deep_legacy):
+        if candidate.exists():
+            return candidate
     raise FileNotFoundError(
         "Could not find dummy OBJ scene XML. Expected one of: "
-        f"{root_xml} or {legacy_xml}"
+        f"{canonical_xml}, {root_legacy}, {deep_legacy}"
     )
 
 

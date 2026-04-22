@@ -84,6 +84,8 @@ Parity ready only when all pass:
 - Updated MATLAB parity script to enforce dt/duration checks, torque-profile replay checks, and canonical parity timeseries export.
 - Added `run_validated_timing_sweep.py` to block sweeps when parity gate fails.
 - Added `run_native_matlab_parity.py` to run native MATLAB parity without requiring `matlab` on PATH; verified on `/Applications/MATLAB_R2025a.app/bin/matlab`.
+- 2026-04-22: Shipped `systematic_studies/racket_trajectory.py` (workspace Lissajous + PD tracking + FFT figure-8 detector) and auto-wired it into `systematic_studies/visualisation/plot_results.py`. No strict-gate claim published; the new visualiser is decoupled from the parity program.
+- 2026-04-22: Safe repo reorg executed (`assets/meshes`, `assets/scenes`, `checkpoints`, `docs`); all parity / benchmark artefact paths preserved. Consolidated project update at `project_updates/2026-04-22_project_consolidation_and_racket_viz.md`.
 
 ## Weekly Update Template
 ### Week Ending
@@ -115,3 +117,4 @@ Parity ready only when all pass:
 
 ## Change Log
 - 2026-04-15: Initial technical tracker template and first weekly entry.
+- 2026-04-22: Racket-viz + safe reorg entries appended in "Completed This Week"; strict gate still open.

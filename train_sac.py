@@ -51,7 +51,9 @@ def main() -> None:
         target_entropy=-2,  # for 2D action
     )
     model.learn(total_timesteps=300_000)
-    model.save("sac_two_link_arm")
+    ckpt_dir = Path(__file__).resolve().parent / "checkpoints"
+    ckpt_dir.mkdir(exist_ok=True)
+    model.save(str(ckpt_dir / "sac_two_link_arm"))
 
     summary = evaluate_policy(env, model, n_steps=100)
 

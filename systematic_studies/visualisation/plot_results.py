@@ -332,6 +332,61 @@ def plot_summary_figure(
     return out_path
 
 
+def plot_racket_trajectory(
+    rows: list[dict[str, float]],
+    figures_dir: Path,
+) -> dict[str, Path]:
+    """Plot racket-tip X-Z trace + joint/speed-vs-time from racket_trajectory.py output."""
+    t = np.array([r["time_s"] for r in rows], dtype=float)
+    hx = np.array([r["hand_x"] for r in rows], dtype=float)
+    hz = np.array([r["hand_z"] for r in rows], dtype=float)
+    q1 = np.rad2deg(np.array([r["q1_rad"] for r in rows], dtype=float))
+    q2 = np.rad2deg(np.array([r["q2_rad"] for r in rows], dtype=float))
+    speed = np.array([r["hand_speed_xz_m_s"] for r in rows], dtype=float)
+
+    fig, ax = plt.subplots(figsize=(7.0, 6.4))
+    ax.plot(hx, hz, lw=1.4, label="Racket tip trace")
+    ax.plot([hx[0]], [hz[0]], "o", color="tab:green", label="Start")
+    ax.plot([hx[-1]], [hz[-1]], "o", color="tab:red", label="End")
+    ax.set_aspect("equal", adjustable="datalim")
+    ax.set_xlabel("Hand X (m)")
+    ax.set_ylabel("Hand Z (m)")
+    ax.set_title("Racket Tip Trajectory (X-Z plane)")
+    ax.legend(loc="best")
+    fig.tight_layout()
+    xz_path = figures_dir / "racket_trajectory_xz.png"
+    fig.savefig(xz_path, dpi=300)
+    plt.close(fig)
+
+    fig, axes = plt.subplots(2, 1, figsize=(9.0, 6.0), sharex=True)
+    axes[0].plot(t, q1, label="Shoulder q1 (deg)")
+    axes[0].plot(t, q2, label="Elbow q2 (deg)")
+    axes[0].set_ylabel("Joint angle (deg)")
+    axes[0].set_title("Joint Angles vs Time")
+    axes[0].legend(loc="best")
+
+    peak_idx = int(np.argmax(speed))
+    axes[1].plot(t, speed, color="tab:purple", label="Hand speed (m/s)")
+    axes[1].plot([t[peak_idx]], [speed[peak_idx]], "o", color="tab:red")
+    axes[1].annotate(
+        f"Peak {speed[peak_idx]:.2f} m/s",
+        xy=(t[peak_idx], speed[peak_idx]),
+        xytext=(8, 10),
+        textcoords="offset points",
+        arrowprops={"arrowstyle": "->", "lw": 0.9},
+    )
+    axes[1].set_xlabel("Time (s)")
+    axes[1].set_ylabel("Hand X-Z speed (m/s)")
+    axes[1].set_title("Racket Tip Speed vs Time")
+    axes[1].legend(loc="best")
+    fig.tight_layout()
+    speed_path = figures_dir / "racket_trajectory_joint_vs_time.png"
+    fig.savefig(speed_path, dpi=300)
+    plt.close(fig)
+
+    return {"racket_trajectory_xz": xz_path, "racket_trajectory_joint_vs_time": speed_path}
+
+
 def generate_all_plots(csv_path: str | Path) -> dict[str, Path]:
     """Generate all publication figures from systematic-study CSV outputs."""
     outputs_dir = Path(csv_path).expanduser().resolve()
@@ -368,6 +423,15 @@ def generate_all_plots(csv_path: str | Path) -> dict[str, Path]:
             double_rows, benchmark_rows, figures_dir, dt_seconds=dt_seconds
         ),
     }
+
+    racket_csv = outputs_dir / "racket_trajectory_timeseries.csv"
+    if racket_csv.exists():
+        racket_rows = load_csv_rows(
+            racket_csv,
+            required_columns=["time_s", "hand_x", "hand_z", "q1_rad", "q2_rad", "hand_speed_xz_m_s"],
+        )
+        outputs.update(plot_racket_trajectory(racket_rows, figures_dir))
+
     return outputs
 
 

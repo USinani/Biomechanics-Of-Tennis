@@ -55,6 +55,12 @@ def main() -> None:
     ckpt = Path(args.checkpoint)
     if ckpt.suffix != ".zip" and (ckpt.with_suffix(".zip")).exists():
         ckpt = ckpt.with_suffix(".zip")
+    if not ckpt.exists():
+        candidate = ROOT / "checkpoints" / ckpt.name
+        if candidate.exists():
+            ckpt = candidate
+        elif candidate.with_suffix(".zip").exists():
+            ckpt = candidate.with_suffix(".zip")
 
     env = ArmSwingEnv(
         mjcf_path=str(MJCF_PATH),
