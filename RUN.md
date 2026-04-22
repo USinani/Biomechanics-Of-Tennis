@@ -46,6 +46,23 @@ mjpython view_mujoco_arm.py
 
 This loads `mujoco_arm.xml` and opens the interactive MuJoCo viewer. Close the window to exit.
 
+## 2b. Canonical OBJ viewer flow (root command)
+
+Use this sequence for the dummy two-link OBJ integration test:
+
+```bash
+# 1) Preflight compile check only (no viewer window)
+./run.sh view_dummy_two_link_obj.py --check-only
+
+# 2) Launch the viewer from root
+./run.sh view_dummy_two_link_obj.py
+```
+
+Notes:
+- Do not drag `.obj` directly into MuJoCo GUI.
+- The wrapper XML (`dummy_two_link_obj_view.xml`) references `Two_link_model.obj`.
+- `view_dummy_two_link_obj.py` auto-resolves both root and legacy `3D_model/` XML locations.
+
 ## 3. Run RL training
 
 ```bash

@@ -119,3 +119,50 @@ Interpretation:
 | Code quality (1–5) | 4 | Single environment supports both baseline and hybrid modes |
 | Doc quality (1–5) | 4 | Commands and benchmark caveat documented |
 | Failures encountered (#) | 1 | Original benchmark target was unreachable |
+
+---
+
+## 8) Patch note — 2026-04-15 (OBJ viewer reliability fix)
+
+### Why this patch was needed
+- The persistent "not showing" issue was not a MATLAB/RL dynamics failure.
+- Root cause was visualization packaging/execution mismatch for OBJ loading.
+- The intended integration test is a root script launch (`./run.sh view_dummy_two_link_obj.py`) that must resolve the MJCF scene reliably.
+
+### Actions taken
+- Updated `view_dummy_two_link_obj.py` to use robust scene resolution:
+  - preferred scene: `dummy_two_link_obj_view.xml` (root)
+  - fallback scene: `3D_model/dummy_two_link_obj_view.xml` (legacy layout)
+- Added explicit compile/preflight failure reporting in `view_dummy_two_link_obj.py`:
+  - wraps `mujoco.MjModel.from_xml_path(...)`
+  - provides clear error guidance for XML/mesh/material path failures
+- Added headless preflight mode in `view_dummy_two_link_obj.py`:
+  - `--check-only` compiles XML + mesh and exits before launching viewer
+- Updated `run.sh` routing:
+  - `./run.sh view_dummy_two_link_obj.py --check-only` now runs with standard Python for CI/headless checks
+  - `./run.sh view_dummy_two_link_obj.py` still runs with `mjpython` on macOS for GUI launch
+- Verified root MJCF wrapper uses direct mesh reference in `dummy_two_link_obj_view.xml`:
+  - `<mesh ... file="Two_link_model.obj" .../>`
+
+### Verification commands run
+```bash
+./run.sh -c "import mujoco; m=mujoco.MjModel.from_xml_path('dummy_two_link_obj_view.xml'); print('dummy_compile_ok', m.nq, m.nmesh)"
+./run.sh -c "from view_dummy_two_link_obj import resolve_asset; print(resolve_asset())"
+./run.sh -m py_compile view_dummy_two_link_obj.py
+./run.sh -c "import mujoco; m=mujoco.MjModel.from_xml_path('dummy_two_link_obj_view.xml'); print('root_dummy_ok', m.nq, m.nmesh)"
+./run.sh view_dummy_two_link_obj.py --check-only
+./run.sh view_dummy_two_link_obj.py
+```
+
+### Observed outputs
+- `dummy_compile_ok 0 1`
+- Resolved asset path: `/Users/uljan/Desktop/Mujoco/dummy_two_link_obj_view.xml`
+- `root_dummy_ok 0 1`
+- `Preflight OK: /Users/uljan/Desktop/Mujoco/dummy_two_link_obj_view.xml (nq=0, nmesh=1)`
+- Viewer smoke command entered running state without XML/resource parse errors
+
+### Stakeholder impact
+- The root-level command remains the canonical launch path:
+  - `./run.sh view_dummy_two_link_obj.py`
+- This de-risks GUI-side manual file loading mistakes (dragging `.obj` directly).
+- Visualization validation is now explicitly separated from RL/MATLAB benchmark logic.
