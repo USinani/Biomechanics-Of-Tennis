@@ -132,35 +132,6 @@ Outputs:
 
 The shared `plot_results.py` will also pick up these CSVs automatically when present.
 
-### Mutual motor learning (Reinforced Turn-take vs Static)
-
-`mutual_motor_learning.py` is the supervisor-driven prototype for the
-paired shared-control research axis (see
-[../docs/PHD_DIRECTIONS.md](../docs/PHD_DIRECTIONS.md) §0a). Two agents
-share control of the two-link arm via per-agent virtual springs:
-
-- `--mode static`: `K_A = K_B = k_eq` (equal control baseline).
-- `--mode rt`: per-agent spring lengths oscillate in anti-phase,
-  `L_i(t) = L0 + dL sin(2*pi*f_rt*t + phi_i)`, `K_i(t) = k_ref * L0 / L_i(t)`.
-  Short spring => high stiffness => dominant agent at that instant.
-
-Commands:
-
-```bash
-./run.sh systematic_studies/mutual_motor_learning.py --mode static --run-mode plot --steps 10000
-./run.sh systematic_studies/mutual_motor_learning.py --mode rt     --run-mode plot --steps 10000
-# With an impulse disturbance
-./run.sh systematic_studies/mutual_motor_learning.py --mode rt --perturb-mode impulse --perturb-amp-nm 6
-```
-
-Outputs:
-
-- `systematic_studies/outputs/mutual_motor_learning_<mode>_timeseries.csv`
-- `systematic_studies/outputs/mutual_motor_learning_<mode>_summary.json` (RMS
-  tracking error per agent, dominance min/mean/max over the steady-state window)
-- `systematic_studies/outputs/figures/mutual_motor_learning_<mode>.png`
-  (stiffness, dominance, tracking error + disturbance, joint trajectories)
-
 For a single-click weekly view, `weekly_dashboard.py` re-runs this figure-8 sweep, regenerates all publication figures, and emits a portable HTML report under `systematic_studies/outputs/reports/`:
 
 ```bash

@@ -35,21 +35,6 @@ Or use the `run.sh` helper:
 ./run.sh systematic_studies/racket_trajectory.py --protocol workspace_figure8 --mode viewer --steps 10000
 ```
 
-**Mutual motor learning** (supervisor direction: Reinforced Turn-take vs Static, two-agent shared control with an adaptive virtual-spring stiffness schedule; see [docs/PHD_DIRECTIONS.md](docs/PHD_DIRECTIONS.md) §0a):
-
-```bash
-# Equal-control baseline (both agents constant K)
-./run.sh systematic_studies/mutual_motor_learning.py --mode static --run-mode plot --steps 10000
-
-# Reinforced Turn-take (sine-wave spring-length handover)
-./run.sh systematic_studies/mutual_motor_learning.py --mode rt --run-mode plot --steps 10000
-
-# With an impulse disturbance at t=3.0s
-./run.sh systematic_studies/mutual_motor_learning.py --mode rt --run-mode plot --perturb-mode impulse --perturb-amp-nm 6
-```
-
-Outputs: `systematic_studies/outputs/mutual_motor_learning_<mode>_timeseries.csv`, `..._summary.json`, and `systematic_studies/outputs/figures/mutual_motor_learning_<mode>.png`.
-
 To generate presentation-ready figures from systematic study CSV outputs:
 
 ```bash

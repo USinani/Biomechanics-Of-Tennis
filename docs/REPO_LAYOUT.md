@@ -66,7 +66,6 @@ Mujoco/
 |-- systematic_studies/         study pipeline (headless + viewer demos)
 |   |-- README.md               commands + slide mapping
 |   |-- racket_trajectory.py    NEW: racket / figure-8 visualiser
-|   |-- mutual_motor_learning.py NEW: two-agent shared control (RT vs Static)
 |   |-- swing_benchmark_mujoco_vs_bridge.py
 |   |-- run_validated_timing_sweep.py
 |   |-- run_native_matlab_parity.py

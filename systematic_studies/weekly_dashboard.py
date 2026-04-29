@@ -74,6 +74,215 @@ FIGURE_SPECS: list[tuple[str, str, str]] = [
     ),
 ]
 
+
+# Presentation-ready captions for each figure. Each entry follows the same
+# What / Why / How / Takeaway / Supervisor-Q schema so every figure in the
+# report answers the same five questions at meeting tempo.
+FIGURE_CAPTIONS: dict[str, dict[str, str]] = {
+    "timing_vs_velocity": {
+        "what": (
+            "Peak end-effector (hand) speed in m/s as a function of the "
+            "elbow-onset delay relative to the shoulder, expressed in "
+            "simulation steps (dt = 1 ms). Green marker = argmax "
+            "(empirical optimum)."
+        ),
+        "why": (
+            "Directly probes the kinetic-chain hypothesis: does delaying "
+            "the distal joint (elbow) amplify distal tip velocity, as "
+            "biomechanics predicts for tennis / baseball strokes?"
+        ),
+        "how": (
+            "Single-seed sweep in systematic_studies/double_pendulum_sweep.py; "
+            "peak speed read per configuration. Rendered by "
+            "plot_results.plot_timing_vs_velocity from "
+            "outputs/double_pendulum_sweep.csv."
+        ),
+        "takeaway": (
+            "A non-trivial optimum exists (delay > 0 beats simultaneous "
+            "drive). Current curve is single-seed; 10-seed re-run + CIs "
+            "are blocked on closing the strict parity gate."
+        ),
+        "supervisor_q": (
+            "\"Confidence intervals?\" -> Pending multi-seed re-run once "
+            "SysID closes the strict gate (docs/PHD_DIRECTIONS.md §2.1)."
+        ),
+    },
+    "energy_vs_timing": {
+        "what": (
+            "Energy-transfer ratio (distal / proximal kinetic energy at "
+            "release) versus the same elbow-onset delay. Same sweep as "
+            "the timing plot above."
+        ),
+        "why": (
+            "Tests whether the speed-maximising delay is also energy-"
+            "efficient, i.e. whether the kinetic-chain optimum is a "
+            "Pareto win rather than a brute-force exchange of effort "
+            "for speed."
+        ),
+        "how": (
+            "plot_results.plot_energy_vs_timing on "
+            "outputs/double_pendulum_sweep.csv; KE computed per link "
+            "from (I, qdot)."
+        ),
+        "takeaway": (
+            "Energy ratio tracks peak-speed trend monotonically in the "
+            "current regime: no obvious Pareto trade-off. Still single-"
+            "seed."
+        ),
+        "supervisor_q": (
+            "\"Is the energy metric canonical?\" -> We use "
+            "KE_elbow / KE_shoulder; needs supervisor sign-off before "
+            "Paper-1 submission."
+        ),
+    },
+    "benchmark_comparison": {
+        "what": (
+            "Shoulder and elbow angle + angular velocity over a single "
+            "0.5 s swing; MuJoCo (solid blue) vs the Python MATLAB_v2 "
+            "bridge (dashed orange) given identical initial state and "
+            "torque schedule."
+        ),
+        "why": (
+            "Parity diagnostic. MATLAB_v2 is the ground-truth controller "
+            "spec. If MuJoCo diverges, any timing/velocity claim that "
+            "uses MuJoCo alone cannot be published against MATLAB."
+        ),
+        "how": (
+            "systematic_studies/swing_benchmark_mujoco_vs_bridge.py "
+            "writes outputs/swing_benchmark_timeseries.csv; "
+            "plot_benchmark_comparison renders the 2x2 panel."
+        ),
+        "takeaway": (
+            "Strict gate FAILS (see \"Strict parity\" table below): "
+            "rmse_q ~ 2.49 rad, rmse_qdot ~ 13.76 rad/s, 7 MuJoCo "
+            "velocity spikes vs 0 in MATLAB. Relaxed gate passes; that "
+            "is NOT a publication claim."
+        ),
+        "supervisor_q": (
+            "\"Integrator or parameters?\" -> Next-week task splits "
+            "this: (i) RK4 on the bridge, (ii) SysID the MATLAB params "
+            "to MuJoCo rollouts. Ablation table follows."
+        ),
+    },
+    "summary_figure": {
+        "what": (
+            "Slide-ready multi-panel: timing-vs-velocity with the "
+            "optimal-delay marker, and energy-transfer-vs-timing. "
+            "Collapses the two sweep figures above into a single figure "
+            "for talks."
+        ),
+        "why": (
+            "Single deliverable that captures the headline result "
+            "candidate for Paper 1 (\"Hybrid residual control + a "
+            "validated timing study\")."
+        ),
+        "how": (
+            "plot_results.plot_summary_figure combines sweep CSV + "
+            "benchmark CSV."
+        ),
+        "takeaway": (
+            "Do NOT quote as a Paper-1 figure yet. Strict parity is "
+            "required first; this figure will be re-rendered with 10-"
+            "seed CIs once the parity gate closes."
+        ),
+        "supervisor_q": (
+            "\"Is this the figure we will submit?\" -> Not verbatim. "
+            "Target is a 3-panel Paper-1 figure with CIs + a parity "
+            "status box."
+        ),
+    },
+    "racket_trajectory_xz": {
+        "what": (
+            "End-effector (hand site) trajectory in the arm's X-Z plane "
+            "over 10 s of closed-loop simulation. The desired workspace "
+            "Lissajous 2:1 reference is tracked via IK + joint-space "
+            "PD control."
+        ),
+        "why": (
+            "Qualitative demonstration that the two-link arm can execute "
+            "a clean infinity-shaped warm-up motion. The figure-8 is the "
+            "candidate structured-exploration prior for a residual "
+            "policy (PhD direction §1.4 / §3.3)."
+        ),
+        "how": (
+            "./run.sh systematic_studies/racket_trajectory.py "
+            "--protocol workspace_figure8 --mode plot --steps 10000. "
+            "See Racket-summary table below for the FFT-based "
+            "figure8_detected flag."
+        ),
+        "takeaway": (
+            "Clean infinity trace: figure8_detected = true, "
+            "freq_ratio_z_over_x ~ 2.00 (exact Lissajous condition), "
+            "~89 self-intersections (consistent with a tight figure-8)."
+        ),
+        "supervisor_q": (
+            "\"How do you decide it IS a figure-8?\" -> Zero-padded "
+            "rFFT of centred X and Z after a settle window; ratio in "
+            "[1.6, 2.4] OR [0.42, 0.62]; stdev gate + self-intersection "
+            "count. Implementation: racket_trajectory.detect_figure8."
+        ),
+    },
+    "racket_trajectory_joint_vs_time": {
+        "what": (
+            "Per-joint angle (q1 shoulder, q2 elbow) and the "
+            "end-effector speed magnitude in the X-Z plane, all plotted "
+            "against time for the same 10 s rollout."
+        ),
+        "why": (
+            "Sanity-check the PD tracking: joint signals should be "
+            "smooth sinusoids at frequencies f and 2f respectively "
+            "(Lissajous condition) with no chatter or saturation."
+        ),
+        "how": (
+            "Same rollout as the X-Z trace above; "
+            "plot_results.plot_racket_trajectory renders this panel from "
+            "outputs/racket_trajectory_timeseries.csv."
+        ),
+        "takeaway": (
+            "Joint angles are clean sinusoids at the expected ratio; no "
+            "torque clipping; hand-speed envelope is periodic and bounded "
+            "(~ 1 m/s peaks)."
+        ),
+        "supervisor_q": (
+            "\"Is the PD gain tuned or arbitrary?\" -> Fixed at (kp=120, "
+            "kd=8); deliberately under-aggressive to stay well inside "
+            "the actuator limits. Gain sweep is deferred, low-priority."
+        ),
+    },
+}
+
+
+# One-line context for each JSON summary table so the reader knows what
+# to scan for without opening the source file.
+JSON_CONTEXTS: dict[str, str] = {
+    "racket_trajectory_summary": (
+        "All figure-8 detection metrics + the schedule that generated "
+        "them. Key row: figure8_detected (must be true) and "
+        "freq_ratio_z_over_x (expected ~ 2.00)."
+    ),
+    "parity_strict": (
+        "Current strict MATLAB vs. MuJoCo parity residual on the swing "
+        "benchmark. parity_ready = true is the gate for Paper-1 claims. "
+        "Scan: rmse_q_rad, rmse_qdot_rad_s, spike_count_mujoco, "
+        "jerk_outliers_mujoco, parity_ready."
+    ),
+    "parity_relaxed": (
+        "Relaxed-bridge parity check used for iteration only. Passing "
+        "this gate is NOT a publication claim; it is a debug signal."
+    ),
+    "swing_benchmark": (
+        "Single-swing benchmark run: bridge vs. MuJoCo deltas, "
+        "parity_ready_bridge_gate, hand-speed RMSE. Aggregates into the "
+        "benchmark_comparison figure above."
+    ),
+    "eval_sac": (
+        "Most recent SAC policy evaluation (two-link arm). Scan: "
+        "mean_return, success_rate. Current run is the pre-SysID "
+        "baseline and is expected to improve after re-training on the "
+        "mechanically-consistent plant."
+    ),
+}
+
 JSON_SPECS: list[tuple[str, str, Path, list[str] | None]] = [
     (
         "racket_trajectory_summary",
@@ -162,6 +371,30 @@ def _filter_fields(
     return picked
 
 
+def _render_caption(slug: str) -> str:
+    """Render the What/Why/How/Takeaway/Supervisor-Q block for a figure."""
+    cap = FIGURE_CAPTIONS.get(slug)
+    if not cap:
+        return ""
+    rows: list[str] = ['<dl class="caption">']
+    pairs = [
+        ("What", cap.get("what", "")),
+        ("Why", cap.get("why", "")),
+        ("How", cap.get("how", "")),
+        ("Takeaway", cap.get("takeaway", "")),
+        ("Likely Q", cap.get("supervisor_q", "")),
+    ]
+    for label, text in pairs:
+        if not text:
+            continue
+        rows.append(
+            f"<dt>{html.escape(label)}</dt>"
+            f"<dd>{html.escape(text)}</dd>"
+        )
+    rows.append("</dl>")
+    return "".join(rows)
+
+
 def render_image_card(spec: tuple[str, str, str]) -> str:
     slug, title, rel_path = spec
     abs_path = OUTPUTS_DIR / rel_path
@@ -185,10 +418,12 @@ def render_image_card(spec: tuple[str, str, str]) -> str:
             "</section>"
         )
     b64 = base64.b64encode(data).decode("ascii")
+    caption_html = _render_caption(slug)
     return (
         f'<section class="card" id="fig-{slug}">'
         f"<h3>{title_esc}</h3>"
         f'<img loading="lazy" alt="{title_esc}" src="data:image/png;base64,{b64}" />'
+        f"{caption_html}"
         f'<p class="path">Source: <code>{rel_esc}</code></p>'
         "</section>"
     )
@@ -230,9 +465,14 @@ def render_json_table(
         f"<tr><th scope='row'>{html.escape(k)}</th><td>{_format_scalar(v)}</td></tr>"
         for (k, v) in flat
     )
+    context = JSON_CONTEXTS.get(slug, "")
+    context_html = (
+        f'<p class="context">{html.escape(context)}</p>' if context else ""
+    )
     return (
         f'<section class="card" id="json-{slug}">'
         f"<h3>{title_esc}</h3>"
+        f"{context_html}"
         f'<table class="kv"><thead><tr><th>Key</th><th>Value</th></tr></thead>'
         f"<tbody>{rows_html}</tbody></table>"
         f'<p class="path">Source: <code>{rel}</code></p>'
@@ -402,7 +642,213 @@ pre.markdown-fallback {
 details.archive-index { margin-top: 1rem; }
 details.archive-index summary { cursor: pointer; color: var(--muted); }
 footer.report { color: var(--muted); font-size: .8rem; margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+
+/* Presentation-ready caption underneath each figure card */
+section.card p.context { color: var(--muted); font-size: .88rem; margin: .25rem 0 .75rem; }
+h2 + p.section-sub { color: var(--muted); font-size: .88rem; margin: -.5rem 0 1rem; }
+dl.caption {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: .3rem .85rem;
+  margin: .85rem 0 .25rem;
+  font-size: .88rem;
+  border-top: 1px solid var(--border);
+  padding-top: .75rem;
+}
+dl.caption dt {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: .7rem;
+  font-weight: 700;
+  padding-top: .15rem;
+}
+dl.caption dd { margin: 0; color: var(--text); line-height: 1.45; }
+dl.caption dt:nth-of-type(5) { color: #facc15; }
+
+/* 'At a glance' KPI strip */
+section.card.intro ul { padding-left: 1.2rem; margin: .5rem 0 0; font-size: .9rem; line-height: 1.55; }
+section.card.intro li { margin-bottom: .25rem; }
+.kpi-strip {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  margin-top: .5rem;
+}
+.kpi {
+  background: rgba(148, 163, 184, .08);
+  border: 1px solid var(--border);
+  border-left-width: 4px;
+  border-radius: 8px;
+  padding: .75rem .9rem;
+}
+.kpi-label { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.kpi-value { font-size: 1.3rem; font-weight: 600; margin-top: .2rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.kpi-hint { font-size: .78rem; color: var(--muted); margin-top: .25rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.kpi.kpi-ok   { border-left-color: #22c55e; }
+.kpi.kpi-ok   .kpi-value { color: #86efac; }
+.kpi.kpi-warn { border-left-color: #eab308; }
+.kpi.kpi-warn .kpi-value { color: #facc15; }
+.kpi.kpi-bad  { border-left-color: #ef4444; }
+.kpi.kpi-bad  .kpi-value { color: #fca5a5; }
+.kpi.kpi-info { border-left-color: var(--accent); }
+.kpi.kpi-info .kpi-value { color: var(--accent); }
 """.strip()
+
+
+def _safe_load_json(path: Path) -> dict | None:
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def _fmt(value: Any, digits: int = 3) -> str:
+    if value is None:
+        return "n/a"
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    if isinstance(value, (int,)):
+        return str(value)
+    if isinstance(value, float):
+        if value != value:
+            return "NaN"
+        return f"{value:.{digits}g}"
+    return html.escape(str(value))
+
+
+def _kpi_tile(label: str, value: str, status: str, hint: str = "") -> str:
+    status_class = {
+        "ok": "kpi-ok",
+        "warn": "kpi-warn",
+        "bad": "kpi-bad",
+        "info": "kpi-info",
+    }.get(status, "kpi-info")
+    hint_html = f'<div class="kpi-hint">{html.escape(hint)}</div>' if hint else ""
+    return (
+        f'<div class="kpi {status_class}">'
+        f'<div class="kpi-label">{html.escape(label)}</div>'
+        f'<div class="kpi-value">{value}</div>'
+        f"{hint_html}"
+        "</div>"
+    )
+
+
+def render_executive_summary() -> str:
+    """Render the 'At a glance' KPI strip from the embedded JSON summaries.
+
+    Reads the same JSONs that are rendered as tables below, so the KPIs
+    and the detailed tables always agree.
+    """
+    parity_strict = _safe_load_json(
+        OUTPUTS_DIR / "compare_signals_matlab_vs_mujoco_metrics.json"
+    )
+    parity_relaxed = _safe_load_json(
+        OUTPUTS_DIR / "compare_signals_bridge_relaxed_metrics.json"
+    )
+    racket = _safe_load_json(OUTPUTS_DIR / "racket_trajectory_summary.json")
+    eval_sac = _safe_load_json(
+        ROOT / "example_two_link" / "metrics" / "eval_sac_two_link_arm.json"
+    )
+
+    tiles: list[str] = []
+
+    if parity_strict:
+        rmse_q = parity_strict.get("rmse_q_rad")
+        rmse_qdot = parity_strict.get("rmse_qdot_rad_s")
+        ready = bool(parity_strict.get("parity_ready", False))
+        status = "ok" if ready else "bad"
+        tiles.append(
+            _kpi_tile(
+                "Strict parity",
+                f"{'READY' if ready else 'FAILING'}",
+                status,
+                hint=(
+                    f"rmse_q = {_fmt(rmse_q)} rad | "
+                    f"rmse_qdot = {_fmt(rmse_qdot)} rad/s"
+                ),
+            )
+        )
+    else:
+        tiles.append(_kpi_tile("Strict parity", "n/a", "warn", "summary missing"))
+
+    if parity_relaxed is not None:
+        relaxed_ready = bool(parity_relaxed.get("parity_ready_bridge_gate", False))
+        tiles.append(
+            _kpi_tile(
+                "Relaxed parity gate",
+                "pass" if relaxed_ready else "fail",
+                "info" if relaxed_ready else "warn",
+                hint="debug-only; NOT a publication claim",
+            )
+        )
+
+    if racket is not None:
+        detected = bool(racket.get("figure8_detected", False))
+        ratio = racket.get("freq_ratio_z_over_x")
+        self_x = racket.get("self_intersections")
+        tiles.append(
+            _kpi_tile(
+                "Racket figure-8",
+                "detected" if detected else "not detected",
+                "ok" if detected else "warn",
+                hint=(
+                    f"z/x freq ratio = {_fmt(ratio, 3)} | "
+                    f"self-intersections = {_fmt(self_x, 0)}"
+                ),
+            )
+        )
+
+    if eval_sac is not None:
+        mean_ret = eval_sac.get("mean_return")
+        success = eval_sac.get("success_rate")
+        n_ep = eval_sac.get("n_episodes")
+        success_status = "ok" if isinstance(success, (int, float)) and success > 0.5 else "warn"
+        tiles.append(
+            _kpi_tile(
+                "SAC eval (two-link)",
+                f"return = {_fmt(mean_ret)}",
+                success_status,
+                hint=f"success_rate = {_fmt(success)} over {_fmt(n_ep, 0)} episodes",
+            )
+        )
+
+    if not tiles:
+        return ""
+
+    return (
+        '<section class="card" id="at-a-glance">'
+        '<h3>At a glance</h3>'
+        '<p class="context">Live KPIs read from the embedded JSON summaries below. '
+        "Strict parity is the hard gate for Paper-1 claims.</p>"
+        f'<div class="kpi-strip">{"".join(tiles)}</div>'
+        "</section>"
+    )
+
+
+def render_intro_banner() -> str:
+    return (
+        '<section class="card intro" id="how-to-read">'
+        '<h3>How to read this report</h3>'
+        "<ul>"
+        "<li><strong>At a glance</strong> (below): current status of the parity gate, "
+        "figure-8 detector, and SAC eval, all read live from the JSONs embedded "
+        "further down the page.</li>"
+        "<li><strong>Each figure</strong> is followed by a fixed 5-field caption "
+        "(<em>What / Why / How / Takeaway / Likely supervisor Q</em>) so every "
+        "plot answers the same questions at meeting tempo.</li>"
+        "<li><strong>Each JSON summary</strong> has a one-line context above the "
+        "key/value table flagging the rows to scan first.</li>"
+        "<li><strong>Source pointers</strong>: PhD roadmap "
+        "<code>docs/PHD_DIRECTIONS.md</code>; weekly log "
+        "<code>project_updates/weekly_updates.md</code>; this week's consolidated "
+        "update <code>project_updates/2026-04-22_project_consolidation_and_racket_viz.md</code>."
+        "</li>"
+        "</ul>"
+        "</section>"
+    )
 
 
 def _iso_week_and_year(d: _dt.date) -> str:
@@ -412,6 +858,8 @@ def _iso_week_and_year(d: _dt.date) -> str:
 
 def _build_toc() -> str:
     items: list[str] = []
+    items.append('<li><a href="#how-to-read">How to read this report</a></li>')
+    items.append('<li><a href="#at-a-glance">At a glance</a></li>')
     items.append('<li><a href="#weekly-md">Weekly updates</a></li>')
     items.append("<li>Figures")
     items.append("<ul>")
@@ -434,6 +882,8 @@ def build_report_html(report_date: _dt.date, iso_week: str) -> str:
         for (slug, title, path, fields) in JSON_SPECS
     )
     toc_html = _build_toc()
+    intro_html = render_intro_banner()
+    kpi_html = render_executive_summary()
     weekly_html = render_markdown_block(iso_week)
 
     return f"""<!doctype html>
@@ -449,10 +899,14 @@ def build_report_html(report_date: _dt.date, iso_week: str) -> str:
   <h2>Contents</h2>
   <ul>{toc_html}</ul>
 </nav>
+{intro_html}
+{kpi_html}
 {weekly_html}
 <h2>Figures</h2>
+<p class=\"section-sub\">Each figure is followed by a fixed What / Why / How / Takeaway / Likely-supervisor-question caption.</p>
 <div class=\"grid\">{figures_html}</div>
 <h2>Summaries</h2>
+<p class=\"section-sub\">Each table has a one-line context above it flagging the rows to scan first.</p>
 <div class=\"grid\">{json_html}</div>
 <footer class=\"report\">
   <p>Rebuild this report at any time with <code>./run.sh systematic_studies/weekly_dashboard.py</code>.</p>
