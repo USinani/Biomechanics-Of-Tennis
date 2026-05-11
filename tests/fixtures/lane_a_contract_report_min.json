@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0.0",
+  "created_at": "2099-01-01T00:00:00Z",
+  "created_by": "tests/fixtures/lane_a_contract_report_min.json",
+  "derived_or_canonical": "derived",
+  "implementation_option": "B",
+  "governance": {
+    "contract_C_primary": true,
+    "contract_C_primary_status": "provisional",
+    "contract_D_diagnostic_only": true,
+    "contract_B_deferred": true,
+    "bridge_gravity_sign_policy": "opt_in"
+  },
+  "records": [
+    {
+      "contract_label": "C",
+      "metric_scope": "window",
+      "horizon_type": "pre_limit",
+      "ic_label": "fixture_ic_a",
+      "run_id": "fixture_run_a",
+      "interpretation_label": "c_fixture",
+      "t_cut": 0.48,
+      "t_cut_rule": "PRIMARY fixture rule A",
+      "bridge_gravity_sign": "mujoco",
+      "sample_count": 480,
+      "rmse_q_rad": 0.1,
+      "rmse_qd": 0.2,
+      "strict_swing_window_gate": true,
+      "not_claimed": ["Fixture not claimed A"]
+    },
+    {
+      "contract_label": "C",
+      "metric_scope": "window",
+      "horizon_type": "pre_limit",
+      "ic_label": "fixture_ic_b",
+      "run_id": "fixture_run_b",
+      "interpretation_label": "c_fixture_b",
+      "t_cut": 0.477,
+      "t_cut_rule": "PRIMARY fixture rule B",
+      "bridge_gravity_sign": "mujoco",
+      "sample_count": 477,
+      "rmse_q_rad": 0.11,
+      "rmse_qd": 0.21,
+      "strict_swing_window_gate": true,
+      "not_claimed": ["Fixture not claimed B"]
+    },
+    {
+      "contract_label": "D",
+      "metric_scope": "full_horizon",
+      "horizon_type": "xml_limited_mixed",
+      "ic_label": "fixture_ic_d",
+      "run_id": "fixture_run_d",
+      "interpretation_label": "d_fixture",
+      "diagnostic_warning": "Full-horizon XML-limited contract D is diagnostic-only and must not be interpreted as contract-C smooth-dynamics parity.",
+      "parity_ready_bridge_gate_full_horizon": false,
+      "velocity_spike_count_mujoco": 8,
+      "velocity_jerk_outlier_count_mujoco": 10,
+      "not_claimed": ["Fixture D not claimed"]
+    }
+  ],
+  "notes": "Minimal fixture for tests/test_lane_a_option_b_reader.py"
+}
