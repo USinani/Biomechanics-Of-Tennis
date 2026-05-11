@@ -10,7 +10,11 @@
 
 **Lane A dashboard implementation (approval packet; no code until signed off):** [`docs/research/LANE_A_DASHBOARD_IMPLEMENTATION_APPROVAL_PACKET.md`](LANE_A_DASHBOARD_IMPLEMENTATION_APPROVAL_PACKET.md)
 
-**Option B derived contract report (JSON + evidence; not canonical):** [`lane_a_contract_report.json`](../../runs/diagnostics/lane_a_reporting_schema/lane_a_contract_report.json) · [`lane_a_reporting_schema_option_b.md`](../../runs/diagnostics/evidence_packets/lane_a_reporting_schema_option_b.md)
+**Option B derived contract report (JSON + evidence; not canonical):** [`lane_a_contract_report.json`](../../runs/diagnostics/lane_a_reporting_schema/lane_a_contract_report.json) · [`lane_a_reporting_schema_option_b.md`](../../runs/diagnostics/evidence_packets/lane_a_reporting_schema_option_b.md) · committed with schema alignment (`793ff0b1` on `phase-2-contract-c` history).
+
+**Option C dashboard reader (read-only; committed `c7c43661`):** reads `runs/diagnostics/lane_a_reporting_schema/lane_a_contract_report.json` in weekly HTML; governance in [`LANE_A_OPTION_C_DASHBOARD_READER_APPROVAL_PACKET.md`](LANE_A_OPTION_C_DASHBOARD_READER_APPROVAL_PACKET.md).
+
+**Phase 2 PR readiness (push/PR checklist; `phase-2-contract-c`):** [`PHASE_2_PR_READINESS_PACKET.md`](PHASE_2_PR_READINESS_PACKET.md)
 
 **Thesis/report-facing Lane A summary (markdown only):** [`docs/research/LANE_A_REPORTING_NOTE.md`](LANE_A_REPORTING_NOTE.md)
 
@@ -109,7 +113,7 @@ Under **contract C** with **`bridge_gravity_sign=mujoco`**, **strict swing-style
 - no native MATLAB replay debugging unless explicitly resumed
 
 ## 7. Recommended next action
-**Seek user approval** for [`LANE_A_DASHBOARD_IMPLEMENTATION_APPROVAL_PACKET.md`](LANE_A_DASHBOARD_IMPLEMENTATION_APPROVAL_PACKET.md) **before** any dashboard code, canonical JSON writes, threshold edits, or harness-default changes. Prefer implementation **option B** (derived JSON under `runs/diagnostics/` only; lowest risk), then **option C** if the weekly HTML should read derived Lane A data **without** writing canonical `systematic_studies/outputs/` KPI JSON. Schema (complete): [`LANE_A_REPORTING_SCHEMA_PLAN.md`](LANE_A_REPORTING_SCHEMA_PLAN.md). Reporting layers: [`LANE_A_REPORTING_CONTRACT_UPDATE_PLAN.md`](LANE_A_REPORTING_CONTRACT_UPDATE_PLAN.md). Governance table: [`PHASE_2_SUPERVISOR_REVIEW_UPDATE.md`](PHASE_2_SUPERVISOR_REVIEW_UPDATE.md) **§6–§7**; move candidates (do not execute from this board alone): [`PHASE_2_MOVE_GENERATOR_CANDIDATES.md`](PHASE_2_MOVE_GENERATOR_CANDIDATES.md). **P2-M1** evidence (reference): `runs/diagnostics/phase2_contract_c_replication/ic_2/` · `runs/diagnostics/evidence_packets/lane_a_phase2_p2m1_ic2_contract_c_replication.md`.
+**Option B** (`793ff0b1`) and **Option C** dashboard reader (`c7c43661`) are **committed** on `phase-2-contract-c`; see header links. **Next:** use [`PHASE_2_PR_READINESS_PACKET.md`](PHASE_2_PR_READINESS_PACKET.md) for a **scoped push/PR** (explicit path staging, no `git add .`, no canonical KPI JSON). Option C governance and escalation context: [`LANE_A_OPTION_C_DASHBOARD_READER_APPROVAL_PACKET.md`](LANE_A_OPTION_C_DASHBOARD_READER_APPROVAL_PACKET.md), [`LANE_A_DASHBOARD_IMPLEMENTATION_APPROVAL_PACKET.md`](LANE_A_DASHBOARD_IMPLEMENTATION_APPROVAL_PACKET.md). Schema: [`LANE_A_REPORTING_SCHEMA_PLAN.md`](LANE_A_REPORTING_SCHEMA_PLAN.md). Reporting layers: [`LANE_A_REPORTING_CONTRACT_UPDATE_PLAN.md`](LANE_A_REPORTING_CONTRACT_UPDATE_PLAN.md). Supervisor table: [`PHASE_2_SUPERVISOR_REVIEW_UPDATE.md`](PHASE_2_SUPERVISOR_REVIEW_UPDATE.md) sections 6–7. Move candidates (do not execute from this board alone): [`PHASE_2_MOVE_GENERATOR_CANDIDATES.md`](PHASE_2_MOVE_GENERATOR_CANDIDATES.md). **P2-M1** evidence (reference): `runs/diagnostics/phase2_contract_c_replication/ic_2/` · `runs/diagnostics/evidence_packets/lane_a_phase2_p2m1_ic2_contract_c_replication.md`.
 
 ## 8. Permission packet for next action
 Allowed:
@@ -117,7 +121,7 @@ Allowed:
 - read derived diagnostics CSV/JSON; approved small probes written **only** under `runs/diagnostics/...`
 - **dashboard / reporting schema planning** as **markdown or design notes** in `docs/research/` (supervisor option **D**, 2026-05-11) — **planning only**
 Forbidden:
-- simulation/XML/code/threshold edits unless a separate approval covers that scope; canonical `systematic_studies/outputs/` writes; parity_smoke/full; native MATLAB parity; skill edits; **`weekly_dashboard.py`** or other **implementation** that writes contract KPI JSON until separate approval
+- simulation/XML/code/threshold edits unless a separate approval covers that scope; canonical `systematic_studies/outputs/` writes; parity_smoke/full; native MATLAB parity; skill edits; further **`weekly_dashboard.py`** edits beyond the committed Option C reader (e.g. new KPI JSON writers, `JSON_CONTEXTS` rewrites) without separate approval
 Approval required:
 - any change to swing benchmark code, dashboard JSON contract paths (`docs/REPO_LAYOUT.md` section 7), threshold defaults, or new canonical outputs
 
