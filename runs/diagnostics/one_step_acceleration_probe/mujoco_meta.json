@@ -1,0 +1,22 @@
+{
+  "scale1_probe": {
+    "xml": "/Users/uljan/Desktop/Mujoco/example_two_link/two_link_arm.xml",
+    "damping_scale": 1.0,
+    "dof_damping_original_first2": [
+      0.12,
+      0.12
+    ],
+    "dof_damping_effective_first2": [
+      0.12,
+      0.12
+    ],
+    "tau_used": [
+      0.0,
+      0.0
+    ]
+  },
+  "b_used_first2": [
+    0.12,
+    0.12
+  ]
+}

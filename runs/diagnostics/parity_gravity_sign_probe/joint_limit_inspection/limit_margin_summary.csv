@@ -1,0 +1,3 @@
+joint,first_crossing_step,first_crossing_time_s,first_crossing_q_deg,min_margin_deg,min_margin_step,notes
+shoulder_pitch,480,0.48,120.07408175349448,-1.4780796788495962,499,first violation step480; min margin at end of run
+elbow_pitch,,,,2.838346269002677,374,no crossing; min margin still positive (elbow never outside XML range)

@@ -1,0 +1,62 @@
+{
+  "status": "plausible mismatch",
+  "params_bridge": {
+    "l1": 0.32,
+    "l2": 0.26,
+    "m1": 1.0687698207512475,
+    "m2": 0.6047565858160353,
+    "lc1": 0.16,
+    "lc2": 0.13,
+    "I1": 0.03648067654830925,
+    "I2": 0.01362718173372133,
+    "g": 9.81
+  },
+  "mujoco_body_masses": {
+    "shoulder_body_mass": 1.0687698207512477,
+    "elbow_body_mass": 0.6047565858160354
+  },
+  "mass_matrix_samples": [
+    {
+      "csv_row_index": 0,
+      "time_s": 0.0,
+      "frob_norm_diff_M": 0.0373762720613121,
+      "relative_frob": 0.24735367360860702,
+      "cond_mujoco": 17.849831136703276,
+      "cond_bridge": 12.587431834168672
+    },
+    {
+      "csv_row_index": 120,
+      "time_s": 0.12,
+      "frob_norm_diff_M": 0.037376272061312124,
+      "relative_frob": 0.23241414878476935,
+      "cond_mujoco": 22.721166526733274,
+      "cond_bridge": 14.678479346017076
+    },
+    {
+      "csv_row_index": 240,
+      "time_s": 0.24,
+      "frob_norm_diff_M": 0.03737627206131214,
+      "relative_frob": 0.21524987107170637,
+      "cond_mujoco": 33.4587118850189,
+      "cond_bridge": 18.297793831102986
+    },
+    {
+      "csv_row_index": 360,
+      "time_s": 0.36,
+      "frob_norm_diff_M": 0.03737627206131217,
+      "relative_frob": 0.21245184019283123,
+      "cond_mujoco": 36.29272008578853,
+      "cond_bridge": 19.08210267507724
+    },
+    {
+      "csv_row_index": 470,
+      "time_s": 0.47000000000000003,
+      "frob_norm_diff_M": 0.03737627206131202,
+      "relative_frob": 0.2127761015425684,
+      "cond_mujoco": 35.93936570323556,
+      "cond_bridge": 18.98752077315309
+    }
+  ],
+  "max_relative_frobenius_M": 0.24735367360860702,
+  "note": "Bridge dynamics use params_from_mujoco_xml (approximate inertia from density); MuJoCo uses full MJCF. Analytical M will not match mj_fullM exactly even if lengths align."
+}

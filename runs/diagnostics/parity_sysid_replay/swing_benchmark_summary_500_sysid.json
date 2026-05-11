@@ -1,0 +1,24 @@
+{
+  "xml": "/Users/uljan/Desktop/Mujoco/example_two_link/two_link_arm.xml",
+  "param_source": "from_json",
+  "mujoco_integrator_requested": "xml",
+  "mujoco_integrator_effective": "implicitfast",
+  "dt": 0.001,
+  "duration_s": 0.499,
+  "steps": 500,
+  "rmse_q_rad": 1.503146698714053,
+  "rmse_qd": 8.321240601109407,
+  "rmse_hand_speed_norm_fd": 0.4046549404495461,
+  "max_tau_clip_delta_nm": 0.0,
+  "velocity_spike_count": 7,
+  "velocity_jerk_outlier_count": 9,
+  "parity_ready_bridge_gate": false,
+  "canonical_contract": {
+    "time_s": "seconds",
+    "mujoco_q*_rad": "radians",
+    "mujoco_qdot*_rad_s": "rad/s",
+    "bridge_q*_rad": "radians",
+    "bridge_qdot*_rad_s": "rad/s",
+    "tau*_Nm": "N*m"
+  }
+}

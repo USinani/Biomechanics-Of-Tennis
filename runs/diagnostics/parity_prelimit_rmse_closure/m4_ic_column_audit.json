@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "missing_columns": [],
+  "deg_rad_row0_max_abs_err_deg": 0.0,
+  "prelimit_corrcoef_bridge_q1_mujoco_q1": -0.998473522901149,
+  "prelimit_corrcoef_bridge_q1_mujoco_q2": 0.9437648391066983,
+  "prelimit_corrcoef_bridge_q2_mujoco_q1": -0.5577468055249224,
+  "prelimit_corrcoef_bridge_q2_mujoco_q2": 0.23420482697235795,
+  "swap_plausible_by_crosscorr": false,
+  "reproduce_first_step_mj_l2_err": 0.0,
+  "reproduce_first_step_bridge_l2_err": 0.0,
+  "time_semantics": {
+    "csv_time_s_is_loop_t_equals_k_times_dt": true,
+    "state_recorded_after_mj_step_and_after_bridge_integrate_step": true,
+    "interpretation": "Row k uses time_s=k*dt (start-of-step label) while q/qdot are post-step states for both simulators; pairwise comparison remains aligned."
+  },
+  "issues": []
+}

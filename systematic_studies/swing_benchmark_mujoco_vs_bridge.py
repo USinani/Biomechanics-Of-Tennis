@@ -21,7 +21,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from example_two_link.matlab_v2_dynamics import compute_forward_dynamics  # noqa: E402
+from example_two_link.matlab_v2_dynamics import integrate_step  # noqa: E402
 from example_two_link.matlab_v2_params import (  # noqa: E402
     default_matlab_v2_params,
     params_from_mujoco_xml,
@@ -46,6 +46,100 @@ def qvel_mujoco_to_rad_per_s(_xml_path: Path, qvel: np.ndarray) -> np.ndarray:
 def qvel_rad_per_s_to_mujoco_units(_xml_path: Path, qvel_rad_s: np.ndarray) -> np.ndarray:
     """MuJoCo runtime qvel uses rad/s regardless of compiler angle attribute."""
     return np.array(qvel_rad_s, dtype=float, copy=True)
+
+
+def _mujoco_integrator_enum(requested: str) -> int | None:
+    """Return MuJoCo integrator enum for requested name, or None for 'xml'."""
+    req = requested.lower().strip()
+    if req == "xml":
+        return None
+    # Use enum constants; avoid guessing integer values.
+    # Names are stable in MuJoCo's C API; Python bindings expose them on mujoco.mjtIntegrator.
+    name_to_enum_attr = {
+        "euler": "mjINT_EULER",
+        "rk4": "mjINT_RK4",
+        "implicit": "mjINT_IMPLICIT",
+        "implicitfast": "mjINT_IMPLICITFAST",
+    }
+    attr = name_to_enum_attr.get(req)
+    if attr is None:
+        raise ValueError(f"Unknown MuJoCo integrator request: {requested!r}")
+    enum_container = getattr(mujoco, "mjtIntegrator", None)
+    if enum_container is None:
+        raise RuntimeError("MuJoCo bindings missing mjtIntegrator enum container.")
+    try:
+        return int(getattr(enum_container, attr))
+    except AttributeError as e:
+        raise RuntimeError(f"MuJoCo bindings missing integrator enum {attr}.") from e
+
+
+def _mujoco_integrator_name(value: int) -> str:
+    enum_container = getattr(mujoco, "mjtIntegrator", None)
+    if enum_container is None:
+        return str(int(value))
+    # Prefer canonical names for summary JSON.
+    known = {
+        int(getattr(enum_container, "mjINT_EULER")): "euler",
+        int(getattr(enum_container, "mjINT_RK4")): "rk4",
+        int(getattr(enum_container, "mjINT_IMPLICIT")): "implicit",
+        int(getattr(enum_container, "mjINT_IMPLICITFAST")): "implicitfast",
+    }
+    return known.get(int(value), str(int(value)))
+
+
+def _set_mujoco_integrator(model: mujoco.MjModel, requested: str) -> None:
+    enum_val = _mujoco_integrator_enum(requested)
+    if enum_val is None:
+        return
+    model.opt.integrator = enum_val
+
+
+def _apply_mujoco_damping_scale(model: mujoco.MjModel, scale: float) -> tuple[np.ndarray, np.ndarray]:
+    s = float(scale)
+    if not np.isfinite(s) or s < 0.0:
+        raise ValueError("--mujoco-damping-scale must be finite and >= 0")
+    original = np.array(model.dof_damping, dtype=float, copy=True)
+    model.dof_damping[:] = model.dof_damping[:] * s
+    effective = np.array(model.dof_damping, dtype=float, copy=True)
+    return original, effective
+
+
+def _resolve_swing_benchmark_joint_ids(model: mujoco.MjModel) -> tuple[list[int], str]:
+    """Joint ids for shoulder/elbow; prefer XML names, else assume hinge order 0,1."""
+    names = ("shoulder_pitch", "elbow_pitch")
+    jids: list[int] = []
+    for n in names:
+        jid = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, n)
+        jids.append(int(jid))
+    if all(j >= 0 for j in jids):
+        return jids, "name_lookup"
+    return [0, 1], "indices_fallback_0_1"
+
+
+def _apply_mujoco_joint_limits_mode(
+    model: mujoco.MjModel, mode: str
+) -> tuple[list[int], list[int], list[list[float]]]:
+    """
+    Toggle joint limit activation (mjModel.jnt_limited) only; jnt_range is left unchanged.
+
+    Apply after from_xml_path and other mjModel patches, and before MjData(model): constraint
+    stack sizing follows the compiled model; toggling limits here keeps the benchmark model
+    and allocated data consistent for the chosen mode.
+    """
+    req = mode.lower().strip()
+    if req not in ("xml", "disabled"):
+        raise ValueError(f"Unknown MuJoCo joint-limits mode: {mode!r}")
+    # Prefer shoulder_pitch / elbow_pitch; if either name is missing, joint indices 0 and 1 are assumed.
+    joint_ids, _ = _resolve_swing_benchmark_joint_ids(model)
+    original = [int(model.jnt_limited[j]) for j in joint_ids]
+    jnt_range = [[float(model.jnt_range[j, 0]), float(model.jnt_range[j, 1])] for j in joint_ids]
+    if req == "xml":
+        effective = list(original)
+    else:
+        for j in joint_ids:
+            model.jnt_limited[j] = 0
+        effective = [int(model.jnt_limited[j]) for j in joint_ids]
+    return original, effective, jnt_range
 
 
 def site_speed_fd_components(
@@ -104,10 +198,7 @@ def hand_planar_speed(l1: float, l2: float, th: np.ndarray, thd: np.ndarray) -> 
 def integrate_bridge_step(
     q: np.ndarray, qd: np.ndarray, tau: np.ndarray, dt: float, params
 ) -> tuple[np.ndarray, np.ndarray]:
-    qdd = compute_forward_dynamics(q, qd, tau, params)
-    qd_new = qd + qdd * dt
-    q_new = q + qd_new * dt
-    return q_new, qd_new
+    return integrate_step(q, qd, tau, dt, params, method="semi_implicit_euler")
 
 
 def main() -> None:
@@ -135,6 +226,36 @@ def main() -> None:
     )
     p.add_argument("--tau-f-hz", type=float, default=0.8, help="Torque oscillation frequency (Hz).")
     p.add_argument("--tau-phase-deg", type=float, default=30.0, help="Phase offset on elbow torque (deg).")
+    p.add_argument(
+        "--bridge-integrator",
+        choices=("semi_implicit_euler", "rk4"),
+        default="semi_implicit_euler",
+        help="Integrator for the MATLAB_v2 Python bridge (MuJoCo side is unchanged).",
+    )
+    p.add_argument(
+        "--bridge-gravity-sign",
+        choices=("default", "mujoco"),
+        default="default",
+        help="Opt-in: flip analytical gravity generalized-force sign for bridge dynamics (default preserves current behavior).",
+    )
+    p.add_argument(
+        "--mujoco-integrator",
+        choices=("xml", "euler", "rk4", "implicit", "implicitfast"),
+        default="xml",
+        help="Override MuJoCo model.opt.integrator in-memory (default: xml = keep XML-defined integrator).",
+    )
+    p.add_argument(
+        "--mujoco-damping-scale",
+        type=float,
+        default=1.0,
+        help="Multiply MuJoCo model.dof_damping in-memory by this scale after XML load (default 1.0).",
+    )
+    p.add_argument(
+        "--mujoco-joint-limits",
+        choices=("xml", "disabled"),
+        default="xml",
+        help="Joint limits: xml = keep XML (default); disabled = clear jnt_limited for benchmark joints in-memory only.",
+    )
     p.add_argument(
         "--out-csv",
         type=Path,
@@ -164,6 +285,11 @@ def main() -> None:
     args = p.parse_args()
 
     model = mujoco.MjModel.from_xml_path(str(args.xml))
+    _set_mujoco_integrator(model, args.mujoco_integrator)
+    dof_damping_original, dof_damping_effective = _apply_mujoco_damping_scale(model, args.mujoco_damping_scale)
+    jnt_limited_original, jnt_limited_effective, jnt_range_snapshot = _apply_mujoco_joint_limits_mode(
+        model, args.mujoco_joint_limits
+    )
     data = mujoco.MjData(model)
     dt = float(model.opt.timestep)
     duration_s = (args.steps - 1) * dt if args.steps > 0 else 0.0
@@ -226,7 +352,15 @@ def main() -> None:
         if not np.all(np.isfinite(data.qpos)) or not np.all(np.isfinite(data.qvel)):
             break
 
-        q_b, qd_b = integrate_bridge_step(q_b, qd_b, tau, dt, params)
+        q_b, qd_b = integrate_step(
+            q_b,
+            qd_b,
+            tau,
+            dt,
+            params,
+            method=args.bridge_integrator,
+            gravity_sign=args.bridge_gravity_sign,
+        )
 
         mj_q_rad = np.array([data.qpos[0], data.qpos[1]], dtype=float)
         mj_q_deg = np.rad2deg(mj_q_rad) if deg_model else mj_q_rad.copy()
@@ -298,6 +432,16 @@ def main() -> None:
     summary = {
         "xml": str(args.xml),
         "param_source": args.param_source,
+        "bridge_gravity_sign": args.bridge_gravity_sign,
+        "mujoco_integrator_requested": args.mujoco_integrator,
+        "mujoco_integrator_effective": _mujoco_integrator_name(int(model.opt.integrator)),
+        "mujoco_damping_scale": float(args.mujoco_damping_scale),
+        "mujoco_dof_damping_original": [float(x) for x in dof_damping_original.reshape(-1)],
+        "mujoco_dof_damping_effective": [float(x) for x in dof_damping_effective.reshape(-1)],
+        "mujoco_joint_limits": args.mujoco_joint_limits,
+        "mujoco_jnt_limited_original": jnt_limited_original,
+        "mujoco_jnt_limited_effective": jnt_limited_effective,
+        "mujoco_jnt_range": jnt_range_snapshot,
         "dt": dt,
         "duration_s": duration_s,
         "steps": args.steps,

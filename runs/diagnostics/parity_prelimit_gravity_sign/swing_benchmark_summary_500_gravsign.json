@@ -1,0 +1,53 @@
+{
+  "xml": "/Users/uljan/Desktop/Mujoco/example_two_link/two_link_arm.xml",
+  "param_source": "from_xml",
+  "bridge_gravity_sign": "mujoco",
+  "mujoco_integrator_requested": "xml",
+  "mujoco_integrator_effective": "implicitfast",
+  "mujoco_damping_scale": 1.0,
+  "mujoco_dof_damping_original": [
+    0.12,
+    0.12
+  ],
+  "mujoco_dof_damping_effective": [
+    0.12,
+    0.12
+  ],
+  "mujoco_joint_limits": "xml",
+  "mujoco_jnt_limited_original": [
+    1,
+    1
+  ],
+  "mujoco_jnt_limited_effective": [
+    1,
+    1
+  ],
+  "mujoco_jnt_range": [
+    [
+      -2.0943951023931953,
+      2.0943951023931953
+    ],
+    [
+      0.0,
+      2.6179938779914944
+    ]
+  ],
+  "dt": 0.001,
+  "duration_s": 0.499,
+  "steps": 500,
+  "rmse_q_rad": 0.6288873760010875,
+  "rmse_qd": 3.3676944991903883,
+  "rmse_hand_speed_norm_fd": 0.49466855325116355,
+  "max_tau_clip_delta_nm": 0.0,
+  "velocity_spike_count": 7,
+  "velocity_jerk_outlier_count": 9,
+  "parity_ready_bridge_gate": false,
+  "canonical_contract": {
+    "time_s": "seconds",
+    "mujoco_q*_rad": "radians",
+    "mujoco_qdot*_rad_s": "rad/s",
+    "bridge_q*_rad": "radians",
+    "bridge_qdot*_rad_s": "rad/s",
+    "tau*_Nm": "N*m"
+  }
+}
