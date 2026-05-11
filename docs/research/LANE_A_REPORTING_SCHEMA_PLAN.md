@@ -50,6 +50,19 @@ This document specifies a **reporting schema** (data shape and semantics) for La
 | `created_by` | string | **All** | Human username, agent id, or script name that produced the row. |
 | `notes` | string | Optional | Free text (e.g. “P2-M1 replication”, “planning pseudo-row”). |
 
+### 3a. Option B derived-report extensions (`runs/diagnostics/…`)
+
+Option B ships a machine-readable aggregate at [`runs/diagnostics/lane_a_reporting_schema/lane_a_contract_report.json`](../../runs/diagnostics/lane_a_reporting_schema/lane_a_contract_report.json) (see [`lane_a_reporting_schema_option_b.md`](../../runs/diagnostics/evidence_packets/lane_a_reporting_schema_option_b.md)). That JSON extends the row shape with the fields below. They are **derived-report safe**: they clarify **t_cut** provenance and surface a **D** warning for UI consumers; they **do not** imply canonical dashboard KPI output, writes to `systematic_studies/outputs/`, or approval to edit `weekly_dashboard.py`.
+
+| Field | Type | Required for | Meaning |
+|-------|------|--------------|---------|
+| `t_cut_source` | string | **C** (Option B rows) | Stable anchor for where **`t_cut`** comes from (e.g. repo-relative path with fragment `#t_cut_s`, or a narrative id when **`t_cut`** aligns to the established contract-**C** baseline window / evidence chain rather than a `t_cut_s` key inside `gravsign_prelimit` in a given `prelimit_compare.json` object). |
+| `t_cut_rule_source` | string | **C** (Option B rows) | Stable anchor for **`t_cut_rule`** text (e.g. `#t_cut_rule` on the IC-2 `prelimit_compare.json`, or explicit note that rule text matches the shared primary rule documented on the IC-2 probe). |
+| `t_cut_provenance_note` | string | **C** (Option B rows) | Human-readable explanation so **C** rows carry **explicit t_cut provenance** and readers do not infer a false byte-for-byte copy from a summary block that only carries window aggregates. |
+| `diagnostic_warning` | string | **D** (Option B rows) | Fixed warning string for markdown/HTML consumers; **D** rows must carry an **explicit diagnostic warning** so full-horizon mixed-contract metrics are **not** interpreted as contract-**C** smooth-dynamics parity. |
+
+**Policy:** **C** records in Option B (and recommended future derived exports) should populate `t_cut_source`, `t_cut_rule_source`, and `t_cut_provenance_note` wherever **`t_cut`** is not trivially copied from the same JSON object as the window metrics. **D** records should populate `diagnostic_warning` verbatim where tooling expects a single audit-friendly string (e.g. before Option C dashboard reads).
+
 ---
 
 ## 4. Metric fields
