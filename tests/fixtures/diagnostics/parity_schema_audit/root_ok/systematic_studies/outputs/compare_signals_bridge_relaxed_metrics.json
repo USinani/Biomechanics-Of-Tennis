@@ -1,0 +1,8 @@
+{
+  "parity_ready": false,
+  "rmse_q_rad": 2.5,
+  "thresholds": {
+    "max_q_dev_rad": 5.0
+  }
+}
+

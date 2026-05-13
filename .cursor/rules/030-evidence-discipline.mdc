@@ -1,0 +1,25 @@
+---
+description: Evidence discipline — contracts, bridge vs native, strict vs relaxed; .ai-cowork pointers
+alwaysApply: true
+---
+
+# Evidence discipline
+
+## Repo primacy
+
+This rule **adds** pointers; it does not replace **`phd-research-os.mdc`** or **`000-research-agent-operating-system.mdc`**. Every quantitative claim still needs artifact path, command, seeds/commit when relevant.
+
+## Co-work checklists
+
+- **Evidence packets:** `.ai-cowork/evidence-auditor.md`, `.ai-cowork/evidence-packet-template.md`
+- **Adversarial pass:** `.ai-cowork/red-team-critic.md`
+
+## Contract labels (mandatory for parity language)
+
+- Name **contract** (e.g. **C** pre-limit window vs **D** full horizon) and **gate** (**strict** vs **relaxed** vs diagnostic).
+- **Bridge** (Python analytical path) vs **native MATLAB** — say which was used; do not imply native ran when only the bridge did.
+- Do **not** justify **strict** publication claims with **relaxed** metrics alone.
+
+## Unknowns
+
+Use **pending** / **unknown** instead of inventing metric cells or file paths.

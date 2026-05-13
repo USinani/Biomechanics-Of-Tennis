@@ -1,0 +1,62 @@
+[
+  {
+    "label": "step0",
+    "source": "/Users/uljan/Desktop/Mujoco/runs/diagnostics/parity_500step_probe/swing_benchmark_timeseries_500.csv",
+    "step": 0,
+    "time_s": 0.0,
+    "q1": 0.08730290610703366,
+    "q2": 0.9598854575880106,
+    "qdot1": 0.03644350731719041,
+    "qdot2": -0.045631008870626884,
+    "tau1": 0.0,
+    "tau2": 0.0
+  },
+  {
+    "label": "pre_event_470",
+    "source": "/Users/uljan/Desktop/Mujoco/runs/diagnostics/parity_500step_probe/swing_benchmark_timeseries_500.csv",
+    "step": 470,
+    "time_s": 0.47000000000000003,
+    "q1": 2.058393343404651,
+    "q2": 0.10853830996636736,
+    "qdot1": 3.819400850659012,
+    "qdot2": 0.9737831533266728,
+    "tau1": 0.0,
+    "tau2": 0.0
+  },
+  {
+    "label": "event_onset_480",
+    "source": "/Users/uljan/Desktop/Mujoco/runs/diagnostics/parity_500step_probe/swing_benchmark_timeseries_500.csv",
+    "step": 480,
+    "time_s": 0.48,
+    "q1": 2.095688072907325,
+    "q2": 0.11845745694476507,
+    "qdot1": 3.6550246634073926,
+    "qdot2": 1.0056325520694707,
+    "tau1": 0.0,
+    "tau2": 0.0
+  },
+  {
+    "label": "post_event_486",
+    "source": "/Users/uljan/Desktop/Mujoco/runs/diagnostics/parity_500step_probe/swing_benchmark_timeseries_500.csv",
+    "step": 486,
+    "time_s": 0.486,
+    "q1": 2.1108962748873368,
+    "q2": 0.14138561111834066,
+    "qdot1": 1.8557100387038636,
+    "qdot2": 5.475450931746508,
+    "tau1": 0.0,
+    "tau2": 0.0
+  },
+  {
+    "label": "sanity_q0",
+    "source": "synthetic",
+    "step": null,
+    "time_s": 0.0,
+    "q1": 0.0,
+    "q2": 0.0,
+    "qdot1": 0.0,
+    "qdot2": 0.0,
+    "tau1": 0.0,
+    "tau2": 0.0
+  }
+]

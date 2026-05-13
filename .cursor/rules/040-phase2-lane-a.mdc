@@ -1,0 +1,25 @@
+---
+description: Phase 2 Lane A — decision board, provisional governance, P2-M1 context
+alwaysApply: true
+---
+
+# Phase 2 — Lane A decision surface
+
+## Single source for branch state and stop rules
+
+- **`docs/research/LANE_A_DECISION_BOARD.md`** — hypotheses, branch parking, **current stop rules**, recommended next action, permission packet.
+- **`docs/research/PHASE_2_SUPERVISOR_REVIEW_UPDATE.md`** — P2-M1 summary; supervisor options **A–E**; no new benchmarks implied by reading alone.
+
+## Provisional governance (planning-level; confirm against board)
+
+Phase 2 working branch narrative includes **contract C** as primary smooth-dynamics reporting path, **contract D** diagnostic-only, constrained **B** deferred, **`bridge_gravity_sign=mujoco`** opt-in until replication and sign-off change defaults. **Branch name** and baseline tips are recorded on the Decision Board — verify **current** rows before claiming branch SHAs.
+
+## Agent defaults on this lane
+
+- **No** threshold edits, **no** canonical `systematic_studies/outputs/` writes, **no** simulation/XML/code edits for “quick fixes” unless the user explicitly widens scope.
+- **No** unprompted benchmarks or parity suites; scheduling runs is a **user decision** tied to the board’s next action.
+- **No** edits under `.ai-cowork/` in automation passes unless the user explicitly scopes that folder.
+
+## When unsure
+
+Re-read the Decision Board **stop rules** and **permission packet** before proposing the next experiment or edit.

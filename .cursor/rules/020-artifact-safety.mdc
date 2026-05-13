@@ -1,0 +1,32 @@
+---
+description: Canonical outputs, derived probes, git staging — Lane A / Phase 2 artifact governance
+alwaysApply: true
+---
+
+# Artifact safety (Lane A / Phase 2)
+
+## Read for policy templates
+
+- `.ai-cowork/artifact-policy-template.md`
+- `.ai-cowork/stop-rules-template.md`
+- Lane A stop rules and permissions: `docs/research/LANE_A_DECISION_BOARD.md` (sections on stop rules and permission packet)
+
+## Canonical outputs (protected)
+
+Do **not** create, overwrite, or “refresh” canonical dashboard or benchmark KPI JSON unless the user explicitly approves that scope. Contract paths include those listed in **`AGENTS.md`** / **`docs/REPO_LAYOUT.md`** (e.g. under `systematic_studies/outputs/`, `example_two_link/metrics/`).
+
+Prefer **derived** artifacts under `runs/diagnostics/...` and evidence markdown under `runs/diagnostics/evidence_packets/` when probes are allowed.
+
+## Git and workspace hygiene
+
+- Do **not** `git add`, `commit`, or `push` unless the user separately approves version control actions.
+- Do **not** stage or bundle **excluded dirty-tree** artifacts (large tool drops, unrelated skills, caches, paths called out as out-of-scope in Phase 2 planning docs such as `docs/research/PHASE_2_CLEAN_FORK_PLAN.md` / move-generator candidates) as if they were part of a Lane A or Phase 2 deliverable without explicit scope.
+- Treat a dirty `git status` as a signal to narrow scope, not to normalize the whole tree in one commit.
+
+## Forbidden without explicit approval (align with active mission)
+
+- Writes to canonical output paths; threshold default changes; simulation / physics / XML edits — unless the user’s instruction or a governance packet explicitly covers that scope.
+
+## Violation protocol
+
+If a protected path was touched by mistake: stop, record in the handoff packet, restore from VCS or regenerate only under user direction.

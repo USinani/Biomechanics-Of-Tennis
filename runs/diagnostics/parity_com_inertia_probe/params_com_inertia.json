@@ -1,0 +1,15 @@
+{
+  "schema": "com_inertia_probe.v1",
+  "params": {
+    "l1": 0.32,
+    "l2": 0.26,
+    "m1": 1.0687698207512475,
+    "m2": 0.6047565858160353,
+    "lc1": 0.16,
+    "lc2": 0.13,
+    "I1": 0.011830886075041958,
+    "I2": 0.004449513760726305,
+    "g": 9.81
+  },
+  "notes": "Derived COM-frame inertias (Iy) from compiled MuJoCo model; all other fields from params_from_mujoco_xml(two_link_arm.xml)."
+}

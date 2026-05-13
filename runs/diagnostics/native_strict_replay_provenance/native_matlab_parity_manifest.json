@@ -1,0 +1,31 @@
+{
+  "timestamp_unix_s": 1778491609,
+  "argv": [
+    "systematic_studies/run_native_matlab_parity.py",
+    "--benchmark-csv",
+    "runs/diagnostics/parity_500step_probe/swing_benchmark_timeseries_500.csv",
+    "--diagnostics-dir",
+    "runs/diagnostics/native_strict_replay_provenance/",
+    "--out-json",
+    "runs/diagnostics/native_strict_replay_provenance/compare_signals_matlab_vs_mujoco_metrics.json",
+    "--out-figure",
+    "runs/diagnostics/native_strict_replay_provenance/compare_signals_matlab_vs_mujoco.png"
+  ],
+  "repo_root": "/Users/uljan/Desktop/Mujoco",
+  "benchmark_csv_original_path": "runs/diagnostics/parity_500step_probe/swing_benchmark_timeseries_500.csv",
+  "benchmark_csv_copied_path": "runs/diagnostics/native_strict_replay_provenance/input_swing_benchmark_timeseries_500.csv",
+  "benchmark_csv_sha256_original": "ee2012cf13b10e34c0d33517b9fdca15859a519362c41d3327959d4b1b177c95",
+  "benchmark_csv_sha256_copied": "ee2012cf13b10e34c0d33517b9fdca15859a519362c41d3327959d4b1b177c95",
+  "git_status_porcelain": " M .DS_Store\n M Matlab_v2/three_d/animate_swing_3d.m\n M Matlab_v2/three_d/default_params_3d.m\n M Matlab_v2/three_d/export/export_swing_video_3d.m\n M Matlab_v2/three_d/run_3d_forward_swing.m\n M docs/MUSCLE_HILL_PIPELINE.md\n M systematic_studies/__pycache__/run_native_matlab_parity.cpython-311.pyc\n M systematic_studies/run_native_matlab_parity.py\n M systematic_studies/swing_benchmark_mujoco_vs_bridge.py\n?? Matlab_v2/main_3d_master.m\n?? Matlab_v2/swing_3d.mp4\n?? Matlab_v2/three_d/animate_swing_timeline_3d.m\n?? Matlab_v2/three_d/ball/ball_machine_params_3d.m\n?? Matlab_v2/three_d/export_hill_integration_slide.m\n?? Matlab_v2/three_d/load_latest_3d_run.m\n?? Matlab_v2/three_d/load_swing_jsonl.m\n?? Matlab_v2/three_d/timeline_two_link_torque_proxy.m\n?? assets/skill-zips/\n?? codex/skills/ai-systems-robustness-os/\n?? codex/skills/outdoor-rig-engineer-os-updated/\n?? runs/diagnostics/evidence_packets/\n?? runs/diagnostics/native_strict_replay_provenance/\n?? runs/diagnostics/parity_500step_probe/\n?? runs/diagnostics/parity_integrator_ablation/\n?? runs/diagnostics/parity_sysid_replay/\n?? tests/fixtures/diagnostics/artifact_contract/\n?? tests/fixtures/diagnostics/inventory_reports/\n?? tests/fixtures/diagnostics/parity_lane_health/\n?? tests/fixtures/diagnostics/parity_schema_audit/\n?? tests/fixtures/diagnostics/reporting_lane_health/\n?? tests/test_artifact_contract_check.py\n?? tests/test_diagnosis_stub.py\n?? tests/test_parity_lane_health.py\n?? tests/test_parity_schema_audit.py\n?? tests/test_reporting_lane_health.py\n?? tests/test_run_native_matlab_parity_provenance.py\n?? tests/test_swing_benchmark_mujoco_integrator_override.py\n?? tools/diagnostics/artifact_contract_check.py\n?? tools/diagnostics/diagnosis_stub.py\n?? tools/diagnostics/parity_lane_health.py\n?? tools/diagnostics/parity_schema_audit.py\n?? tools/diagnostics/reporting_lane_health.py\n?? tools/gh\n?? tools/gh_2.54.0_macOS_arm64.tar.gz\n?? tools/gh_2.54.0_macOS_arm64.zip\n?? tools/gh_2.54.0_macOS_arm64/\n",
+  "failure_stage": "matlab_batch",
+  "matlab_returncode": 1,
+  "matlab_stdout_path": "runs/diagnostics/native_strict_replay_provenance/matlab_stdout.txt",
+  "matlab_stderr_path": "runs/diagnostics/native_strict_replay_provenance/matlab_stderr.txt",
+  "matlab_output_dir": null,
+  "compare_signals": {
+    "skipped": null,
+    "out_json": null,
+    "out_figure": null,
+    "exit_code": null
+  }
+}

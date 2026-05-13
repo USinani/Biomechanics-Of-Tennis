@@ -33,6 +33,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from systematic_studies.lane_a_contract_report_html import render_lane_a_contract_report_section
+
 OUTPUTS_DIR = ROOT / "systematic_studies" / "outputs"
 FIGURES_DIR = OUTPUTS_DIR / "figures"
 REPORTS_DIR = OUTPUTS_DIR / "reports"
@@ -693,6 +695,79 @@ section.card.intro li { margin-bottom: .25rem; }
 .kpi.kpi-bad  .kpi-value { color: #fca5a5; }
 .kpi.kpi-info { border-left-color: var(--accent); }
 .kpi.kpi-info .kpi-value { color: var(--accent); }
+
+/* Lane A Option B derived subsection (firewall from canonical JSON_SPECS tables) */
+section.lane-a-contract {
+  border: 2px solid var(--accent);
+  margin: 2rem 0;
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.12), var(--card));
+}
+section.lane-a-contract h2 {
+  margin-top: 0;
+  color: var(--accent);
+  font-size: 1.25rem;
+}
+section.lane-a-contract.lane-a-missing {
+  border-color: var(--border);
+  background: var(--card-warn);
+}
+p.lane-a-guardrail {
+  font-weight: 600;
+  color: #facc15;
+  border-left: 4px solid #eab308;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  background: rgba(234, 179, 8, 0.12);
+  line-height: 1.45;
+}
+div.lane-a-derived-banner {
+  border: 1px dashed var(--accent);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+p.lane-a-meta code { font-size: 0.85rem; }
+div.lane-a-governance ul { margin: 0.25rem 0 0; padding-left: 1.2rem; }
+article.lane-a-record {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+  background: rgba(15, 23, 42, 0.55);
+}
+span.contract-badge {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(56, 189, 248, 0.25);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+dl.lane-a-kv {
+  display: grid;
+  grid-template-columns: minmax(9rem, 32%) 1fr;
+  gap: 0.35rem 0.75rem;
+  font-size: 0.88rem;
+  margin: 0.5rem 0 0;
+}
+dl.lane-a-kv dt {
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+dl.lane-a-kv dd {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+dd.lane-a-d-warning {
+  white-space: pre-wrap;
+  color: #fecaca;
+}
+hr.lane-a-sep {
+  border: none;
+  border-top: 2px solid var(--accent);
+  margin: 2rem 0 1.5rem;
+  opacity: 0.85;
+}
 """.strip()
 
 
@@ -861,6 +936,7 @@ def _build_toc() -> str:
     items.append('<li><a href="#how-to-read">How to read this report</a></li>')
     items.append('<li><a href="#at-a-glance">At a glance</a></li>')
     items.append('<li><a href="#weekly-md">Weekly updates</a></li>')
+    items.append('<li><a href="#lane-a-contract-report">Lane A (derived contract report)</a></li>')
     items.append("<li>Figures")
     items.append("<ul>")
     for slug, title, _ in FIGURE_SPECS:
@@ -885,6 +961,7 @@ def build_report_html(report_date: _dt.date, iso_week: str) -> str:
     intro_html = render_intro_banner()
     kpi_html = render_executive_summary()
     weekly_html = render_markdown_block(iso_week)
+    lane_a_html = render_lane_a_contract_report_section(ROOT)
 
     return f"""<!doctype html>
 <html lang=\"en\"><head><meta charset=\"utf-8\" />
@@ -902,6 +979,8 @@ def build_report_html(report_date: _dt.date, iso_week: str) -> str:
 {intro_html}
 {kpi_html}
 {weekly_html}
+<hr class="lane-a-sep" />
+{lane_a_html}
 <h2>Figures</h2>
 <p class=\"section-sub\">Each figure is followed by a fixed What / Why / How / Takeaway / Likely-supervisor-question caption.</p>
 <div class=\"grid\">{figures_html}</div>

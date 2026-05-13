@@ -1,0 +1,42 @@
+---
+description: Mission control — one mission, one hypothesis, one executor; .ai-cowork doctrine
+alwaysApply: true
+---
+
+# Mission control (co-work blueprint)
+
+## Authoritative markdown (do not edit `.ai-cowork/` unless the user explicitly scopes that)
+
+- **Doctrine + rotation:** `.ai-cowork/mission-control.md`
+- **OS overview:** `.ai-cowork/README.md`
+- **Executor vs read-only:** `.ai-cowork/agent-roles.md`
+- **Scored moves / templates:** `.ai-cowork/move-generator.md`, `.ai-cowork/*-template.md`
+- **Cursor command stub:** `.ai-cowork/cursor/commands/mission-control.md`
+
+## Invariants
+
+1. **One mission** — one sentence outcome the session should decide or prove.
+2. **One active hypothesis** — falsifiable; superseded items live on the Decision Board, not as silent scope creep.
+3. **One executor** — one agent/session owns writes and experiments for that scope; parallel runs are **read-only** reviewers unless handoff promotes a new executor.
+
+## Handoff block (use for non-trivial work)
+
+```text
+Mission:
+Active hypothesis:
+Executor:
+Lane / scope:
+Last evidence packet:
+Stop rules in effect:
+Next action (single):
+Permission: Allowed | Allowed with conditions | Needs review
+```
+
+## Lane lesson (portable)
+
+**Trajectory disagreement is downstream.** Name the smallest invariant or contract already aligned before interpreting long-horizon metrics.
+
+## Anti-patterns
+
+- Merging **diagnostic** contract numbers with **publication** contract claims without labels.
+- Expanding experiments without updating the mission block or checking active stop rules on the Lane A Decision Board.
