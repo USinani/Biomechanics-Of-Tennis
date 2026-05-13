@@ -16,6 +16,8 @@
 
 **Phase 2 PR readiness (push/PR checklist; `phase-2-contract-c`):** [`PHASE_2_PR_READINESS_PACKET.md`](PHASE_2_PR_READINESS_PACKET.md)
 
+**Phase 2 post-merge consolidation (PR #1 → `commit-changes`; merged tip `837f7913`):** [`PHASE_2_POST_MERGE_DECISION_PACKET.md`](PHASE_2_POST_MERGE_DECISION_PACKET.md)
+
 **Thesis/report-facing Lane A summary (markdown only):** [`docs/research/LANE_A_REPORTING_NOTE.md`](LANE_A_REPORTING_NOTE.md)
 
 **Supervisor-facing Lane A brief (markdown only):** [`docs/research/LANE_A_SUPERVISOR_SUMMARY.md`](LANE_A_SUPERVISOR_SUMMARY.md)
@@ -113,7 +115,13 @@ Under **contract C** with **`bridge_gravity_sign=mujoco`**, **strict swing-style
 - no native MATLAB replay debugging unless explicitly resumed
 
 ## 7. Recommended next action
-**Option B** (`793ff0b1`) and **Option C** dashboard reader (`c7c43661`) are **committed** on `phase-2-contract-c`; see header links. **Next:** use [`PHASE_2_PR_READINESS_PACKET.md`](PHASE_2_PR_READINESS_PACKET.md) for a **scoped push/PR** (explicit path staging, no `git add .`, no canonical KPI JSON). Option C governance and escalation context: [`LANE_A_OPTION_C_DASHBOARD_READER_APPROVAL_PACKET.md`](LANE_A_OPTION_C_DASHBOARD_READER_APPROVAL_PACKET.md), [`LANE_A_DASHBOARD_IMPLEMENTATION_APPROVAL_PACKET.md`](LANE_A_DASHBOARD_IMPLEMENTATION_APPROVAL_PACKET.md). Schema: [`LANE_A_REPORTING_SCHEMA_PLAN.md`](LANE_A_REPORTING_SCHEMA_PLAN.md). Reporting layers: [`LANE_A_REPORTING_CONTRACT_UPDATE_PLAN.md`](LANE_A_REPORTING_CONTRACT_UPDATE_PLAN.md). Supervisor table: [`PHASE_2_SUPERVISOR_REVIEW_UPDATE.md`](PHASE_2_SUPERVISOR_REVIEW_UPDATE.md) sections 6–7. Move candidates (do not execute from this board alone): [`PHASE_2_MOVE_GENERATOR_CANDIDATES.md`](PHASE_2_MOVE_GENERATOR_CANDIDATES.md). **P2-M1** evidence (reference): `runs/diagnostics/phase2_contract_c_replication/ic_2/` · `runs/diagnostics/evidence_packets/lane_a_phase2_p2m1_ic2_contract_c_replication.md`.
+**PR #1 merged:** Phase 2 contract-C publish is now **mainline on `commit-changes`** (merge commit **`837f7913`**). Post-merge record: [`PHASE_2_POST_MERGE_DECISION_PACKET.md`](PHASE_2_POST_MERGE_DECISION_PACKET.md).
+
+**Next (post-merge):** **Manual HTML preview packet** for the weekly dashboard **Lane A (derived contract report)** section — add lightweight visual/browser QA alongside existing unit tests (see post-merge packet §8). Pre-merge PR checklist remains archived in [`PHASE_2_PR_READINESS_PACKET.md`](PHASE_2_PR_READINESS_PACKET.md).
+
+**Context links (unchanged science):** Schema: [`LANE_A_REPORTING_SCHEMA_PLAN.md`](LANE_A_REPORTING_SCHEMA_PLAN.md). Reporting layers: [`LANE_A_REPORTING_CONTRACT_UPDATE_PLAN.md`](LANE_A_REPORTING_CONTRACT_UPDATE_PLAN.md). Supervisor table: [`PHASE_2_SUPERVISOR_REVIEW_UPDATE.md`](PHASE_2_SUPERVISOR_REVIEW_UPDATE.md) sections 6–7. Move candidates (do not execute from this board alone): [`PHASE_2_MOVE_GENERATOR_CANDIDATES.md`](PHASE_2_MOVE_GENERATOR_CANDIDATES.md). **P2-M1** evidence (reference): `runs/diagnostics/phase2_contract_c_replication/ic_2/` · `runs/diagnostics/evidence_packets/lane_a_phase2_p2m1_ic2_contract_c_replication.md`.
+
+**Doc hygiene note:** Header links to [`LANE_A_OPTION_C_DASHBOARD_READER_APPROVAL_PACKET.md`](LANE_A_OPTION_C_DASHBOARD_READER_APPROVAL_PACKET.md) and [`LANE_A_DASHBOARD_IMPLEMENTATION_APPROVAL_PACKET.md`](LANE_A_DASHBOARD_IMPLEMENTATION_APPROVAL_PACKET.md) still describe governance intent, but those files are **not** present under `docs/research/` on the merged tree at **`837f7913`**; add or relink in a future **doc-only** pass if required.
 
 ## 8. Permission packet for next action
 Allowed:
